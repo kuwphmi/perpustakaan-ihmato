@@ -1,6 +1,4 @@
-import './App.css'
-
-function App() {
+function Home() {
   return (
     <div style={{ 
       fontFamily: "Arial", 
@@ -40,4 +38,4 @@ function App() {
   )
 }
 
-export default App
+export default Home
