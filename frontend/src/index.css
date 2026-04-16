@@ -1,6 +1,14 @@
+/* 🔥 IMPORT FONT POPPINS */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 @import "tailwindcss";
 
-/* ANIMASI KAMU AMAN */
+/* 🔥 GLOBAL FONT */
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ANIMASI KAMU */
 @keyframes gradientMove {
   0% {
     background-position: 0% 50%;
@@ -18,7 +26,7 @@
   animation: gradientMove 6s ease infinite;
 }
 
-/* 🔥 FIX SCROLL + AOS BIAR GAK NYENDAT */
+/* 🔥 FIX STABILITY AOS */
 html {
   scroll-behavior: smooth;
 }
@@ -27,8 +35,41 @@ body {
   overflow-x: hidden;
 }
 
-/* penting banget buat AOS biar halus */
+/* OPTIMASI AOS BIAR SMOOTH */
 [data-aos] {
   will-change: transform, opacity;
-  transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
+}
+/* 🔥 CUSTOM AOS BIAR KAYAK GSAP */
+[data-aos="slide-left"] {
+  transform: translateX(-120px);
+  opacity: 0;
+  transition-property: transform, opacity;
+}
+
+[data-aos="slide-left"].aos-animate {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+[data-aos="slide-right"] {
+  transform: translateX(120px);
+  opacity: 0;
+  transition-property: transform, opacity;
+}
+
+[data-aos="slide-right"].aos-animate {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+[data-aos="slide-up-smooth"] {
+  transform: translateY(60px);
+  opacity: 0;
+  transition-property: transform, opacity;
+}
+
+[data-aos="slide-up-smooth"].aos-animate {
+  transform: translateY(0);
+  opacity: 1;
 }
