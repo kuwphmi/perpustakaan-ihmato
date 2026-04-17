@@ -3,9 +3,17 @@
 
 @import "tailwindcss";
 
-/* 🔥 GLOBAL FONT */
+/* 🔥 GLOBAL FONT + BACKGROUND FIX (PENTING) */
 body {
   font-family: 'Poppins', sans-serif;
+  background: #f5f7fb;
+  overflow-x: hidden;
+}
+
+/* 🔥 SMOOTH FONT RENDER */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ANIMASI KAMU */
@@ -31,15 +39,12 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
-  overflow-x: hidden;
-}
-
 /* OPTIMASI AOS BIAR SMOOTH */
 [data-aos] {
   will-change: transform, opacity;
   transform: translateZ(0);
 }
+
 /* 🔥 CUSTOM AOS BIAR KAYAK GSAP */
 [data-aos="slide-left"] {
   transform: translateX(-120px);
@@ -72,4 +77,12 @@ body {
 [data-aos="slide-up-smooth"].aos-animate {
   transform: translateY(0);
   opacity: 1;
+}
+
+/* 🔥 GLASSMORPHISM CLASS (BARU) */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
