@@ -44,6 +44,6 @@ class BukuJualController extends Controller
             ];
         }
 
-        return response()->json($books);
+        return view('BukuJual', compact('books'));
     }
 }
