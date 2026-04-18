@@ -1,88 +1,22 @@
-/* 🔥 IMPORT FONT POPPINS */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
+/* 🔥 TAILWIND */
 @import "tailwindcss";
 
-/* 🔥 GLOBAL FONT + BACKGROUND FIX (PENTING) */
+/* 🔥 FONT (WAJIB kalau gak pakai config) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* 🔥 GLOBAL */
 body {
   font-family: 'Poppins', sans-serif;
   background: #f5f7fb;
   overflow-x: hidden;
 }
 
-/* 🔥 SMOOTH FONT RENDER */
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* ANIMASI KAMU */
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradientMove 6s ease infinite;
-}
-
-/* 🔥 FIX STABILITY AOS */
+/* 🔥 SMOOTH SCROLL */
 html {
   scroll-behavior: smooth;
 }
 
-/* OPTIMASI AOS BIAR SMOOTH */
+/* 🔥 OPTIMASI AOS */
 [data-aos] {
   will-change: transform, opacity;
-  transform: translateZ(0);
-}
-
-/* 🔥 CUSTOM AOS BIAR KAYAK GSAP */
-[data-aos="slide-left"] {
-  transform: translateX(-120px);
-  opacity: 0;
-  transition-property: transform, opacity;
-}
-
-[data-aos="slide-left"].aos-animate {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-[data-aos="slide-right"] {
-  transform: translateX(120px);
-  opacity: 0;
-  transition-property: transform, opacity;
-}
-
-[data-aos="slide-right"].aos-animate {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-[data-aos="slide-up-smooth"] {
-  transform: translateY(60px);
-  opacity: 0;
-  transition-property: transform, opacity;
-}
-
-[data-aos="slide-up-smooth"].aos-animate {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-/* 🔥 GLASSMORPHISM CLASS (BARU) */
-.glass {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }

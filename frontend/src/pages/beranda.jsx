@@ -3,13 +3,15 @@ import "aos/dist/aos.css"
 import { useEffect, useState } from "react"
 import { FiMenu, FiX } from "react-icons/fi"
 import logo from "../assets/logo.png"
+import { FiDollarSign, FiUser, FiBookOpen, FiShield } from "react-icons/fi"
 
-// 👉 gambar banner
+
 import banner1 from "../assets/banner1.png"
 import banner2 from "../assets/banner2.png"
 import banner3 from "../assets/banner3.png"
+import foto from "../assets/foto1beranda.png"
 
-function Home() {
+function beranda() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -150,7 +152,7 @@ function Home() {
           <div className="min-w-full relative z-10 h-full">
             <img
               src={banner1}
-              className="w-full h-full object-contain md:object-cover object-center bg-black"
+              className="w-full h-full object-cover object-center bg-black"
             />
             <div className="absolute inset-0 bg-black/40"></div>
 
@@ -164,7 +166,6 @@ function Home() {
                     Cari Buku
                   </button>
 
-                  {/* 🔥 UPDATED DAFTAR BUTTON */}
                   <button className="bg-transparent border border-blue-500 text-blue-500 px-5 py-2 rounded-2xl hover:bg-blue-600 hover:text-white transition">
                     Daftar
                   </button>
@@ -177,7 +178,7 @@ function Home() {
           <div className="min-w-full relative z-10 h-full">
             <img
               src={banner2}
-              className="w-full h-full object-contain md:object-cover object-center bg-black"
+              className="w-full h-full object-cover object-center bg-black"
             />
             <div className="absolute inset-0 bg-black/40"></div>
 
@@ -191,7 +192,6 @@ function Home() {
                     Cari Buku
                   </button>
 
-                  {/* 🔥 UPDATED DAFTAR BUTTON */}
                   <button className="bg-transparent border border-blue-500 text-blue-500 px-5 py-2 rounded-2xl hover:bg-blue-600 hover:text-white transition">
                     Daftar
                   </button>
@@ -204,7 +204,7 @@ function Home() {
           <div className="min-w-full relative z-10 h-full">
             <img
               src={banner3}
-              className="w-full h-full object-contain md:object-cover object-center bg-black"
+              className="w-full h-full object-cover bg-black"
             />
             <div className="absolute inset-0 bg-black/40"></div>
 
@@ -229,33 +229,102 @@ function Home() {
 
         </div>
 
-        {/* WAVE */}
-        <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-30">
-          <svg
-            viewBox="0 0 1440 320"
-            className="w-full h-[140px] md:h-[120px]"
-            preserveAspectRatio="none"
-          >
-            <path
-              fill="#ffffff"
-              d="M0,0 C360,240 1080,240 1440,0 L1440,320 L0,320 Z"
-            />
-          </svg>
-        </div>
+        {/* 🔥 WAVE DESKTOP */}
+<div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-30 hidden md:block">
+  <svg
+    viewBox="0 0 1440 320"
+    className="w-full h-[120px]"
+    preserveAspectRatio="none"
+  >
+    <path
+      fill="#ffffff"
+      d="M0,0 C360,240 1080,240 1440,0 L1440,320 L0,320 Z"
+    />
+  </svg>
+</div>
+
+{/* 🔥 GARIS LURUS MOBILE */}
+<div className="absolute bottom-0 left-0 w-full z-30 md:hidden">
+  <div className="w-full h-[40px] bg-white"></div>
+</div>
 
       </div>
 
-      {/* CONTENT */}
-      <div className="bg-white py-20 px-6 md:px-16">
-        <h2 className="text-2xl font-bold text-gray-800">
-          Konten Selanjutnya
-        </h2>
+      {/* 🔥 CONTENT SECTION */}
+<div className="bg-blue-50 py-20 px-6 md:px-16">
+  
+  <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+    
+    {/* 🔥 KIRI (TEXT + IMAGE) */}
+    <div>
+      <h2 className="text-3xl md:text-4xl font-bold text-gray-800 leading-snug">
+        Solusi Digitalisasi <br /> Perpustakaanmu
+      </h2>
 
-        <div className="h-[800px]"></div>
+      {/* IMAGE (KAMU GANTI SENDIRI) */}
+      <div className="mt-6">
+        <img
+  src={foto}
+  alt="preview"
+  className="w-[220px] md:w-[260px] h-[300px] md:h-[360px] object-cover rounded-2xl shadow-lg"
+/>
       </div>
+    </div>
+
+   {/* 🔥 KANAN (CARD FITUR) */}
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+  {/* CARD 1 */}
+  <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
+    <FiDollarSign className="text-3xl text-blue-600 mb-3" />
+    <h3 className="font-semibold text-gray-800">
+      Biaya Investasi Sangat Kecil
+    </h3>
+    <p className="text-sm text-gray-500 mt-2">
+      Tidak membutuhkan ruangan khusus, rak buku, server, dan infrastruktur lainnya
+    </p>
+  </div>
+
+  {/* CARD 2 */}
+  <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
+    <FiUser className="text-3xl text-blue-600 mb-3" />
+    <h3 className="font-semibold text-gray-800">
+      User Friendly
+    </h3>
+    <p className="text-sm text-gray-500 mt-2">
+      Mudah digunakan oleh siapa pun dan bisa diakses di semua perangkat
+    </p>
+  </div>
+
+  {/* CARD 3 */}
+  <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
+    <FiBookOpen className="text-3xl text-blue-600 mb-3" />
+    <h3 className="font-semibold text-gray-800">
+      Konten Favorit Terlengkap
+    </h3>
+    <p className="text-sm text-gray-500 mt-2">
+      Ribuan konten tersedia sesuai kebutuhanmu
+    </p>
+  </div>
+
+  {/* CARD 4 */}
+  <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
+    <FiShield className="text-3xl text-blue-600 mb-3" />
+    <h3 className="font-semibold text-gray-800">
+      Full Support System
+    </h3>
+    <p className="text-sm text-gray-500 mt-2">
+      Jaminan operasional dengan tim terbaik
+    </p>
+  </div>
+
+</div>
+
+  </div>
+</div>
 
     </div>
   )
 }
 
-export default Home
+export default beranda
