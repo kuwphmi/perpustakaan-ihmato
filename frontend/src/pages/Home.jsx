@@ -4,6 +4,11 @@ import { useEffect, useState } from "react"
 import { FiMenu, FiX } from "react-icons/fi"
 import logo from "../assets/logo.png"
 
+// 👉 gambar banner
+import banner1 from "../assets/banner1.png"
+import banner2 from "../assets/banner2.png"
+import banner3 from "../assets/banner3.png"
+
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -38,20 +43,19 @@ function Home() {
     <div
       style={{
         minHeight: "100vh",
-        backgroundColor: "#f5f7fb",
+        backgroundColor: "transparent",
         transition: "0.3s",
       }}
     >
 
-      {/* 🔥 NAVBAR */}
+      {/* NAVBAR */}
       <div
-        className="fixed top-0 left-0 w-full flex items-center justify-between px-4 md:px-10 py-4 z-50 transition-all duration-300"
-        style={{
-          backgroundColor: scrolled ? "#0f172a" : "transparent",
-          backdropFilter: scrolled ? "blur(10px)" : "none",
-        }}
+        className={`fixed top-0 left-0 w-full flex items-center justify-between px-4 md:px-10 py-4 z-50 transition-all duration-500 ease-in-out border-b ${
+          scrolled
+            ? "bg-black/80 border-white/10 shadow-lg"
+            : "bg-transparent border-white/20"
+        }`}
       >
-
         {/* LOGO */}
         <div className="flex items-center gap-2">
           <img
@@ -69,41 +73,33 @@ function Home() {
           <a href="#" className="text-blue-600 font-semibold">
             Beranda
           </a>
-
           <a href="#" className="hover:text-blue-600 transition">
             Buku
           </a>
-
           <a href="#" className="hover:text-blue-600 transition">
             Pustakawan
           </a>
 
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-2xl">
+          <button className="bg-blue-600 text-white px-4 py-2 rounded-2xl cursor-pointer transition-all duration-300 hover:bg-blue-700 hover:scale-105">
             Login
           </button>
         </div>
 
         {/* MOBILE */}
-        <div className="md:hidden flex items-center gap-3 text-white">
-
-          <button className="bg-blue-600 px-3 py-1 rounded-2xl text-sm">
+        <div className="md:hidden flex items-center gap-1 text-white">
+          <button className="bg-blue-600 px-3 py-1 rounded-2xl text-sm cursor-pointer transition-all duration-300 hover:bg-blue-700 hover:scale-105">
             Login
           </button>
 
-          <button
-            onClick={() => setMenuOpen(true)}
-            className="text-2xl"
-          >
+          <button onClick={() => setMenuOpen(true)} className="text-2xl">
             <FiMenu />
           </button>
-
         </div>
       </div>
 
-      {/* SPACER */}
       <div className="h-20"></div>
 
-      {/* 🔥 MENU MOBILE */}
+      {/* MOBILE MENU */}
       <div
         className={`fixed top-0 left-0 w-full h-full z-50 transform transition-transform duration-300 ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
@@ -113,35 +109,35 @@ function Home() {
           color: "#1f2937",
         }}
       >
-
         <div className="flex items-center justify-between px-6 py-4 border-b">
           <div className="flex items-center gap-2">
             <img src={logo} className="w-8 h-8 object-contain" />
             <h1 className="font-semibold text-blue-600">BukuIn</h1>
           </div>
 
-          <button onClick={() => setMenuOpen(false)} className="text-2xl">
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="text-2xl cursor-pointer"
+          >
             <FiX />
           </button>
         </div>
 
         <div className="flex flex-col items-start gap-6 px-6 py-10 text-lg">
-          <a href="#" className="text-blue-600 font-semibold">
+          <a href="#" className="text-blue-600 font-semibold cursor-pointer">
             Beranda
           </a>
-
-          <a href="#" className="hover:text-blue-600 transition">
+          <a href="#" className="hover:text-blue-600 transition cursor-pointer">
             Buku user
           </a>
-
-          <a href="#" className="hover:text-blue-600 transition">
+          <a href="#" className="hover:text-blue-600 transition cursor-pointer">
             Pustakawan
           </a>
         </div>
       </div>
 
-      {/* 🔥 BANNER SLIDER */}
-      <div className="relative w-full h-[90vh] overflow-hidden">
+      {/* BANNER SLIDER */}
+      <div className="relative w-full h-[90vh] overflow-hidden mt-[-80px]">
 
         <div
           className="flex h-full transition-transform duration-700"
@@ -150,55 +146,106 @@ function Home() {
           }}
         >
 
-          <div className="min-w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-400 text-white">
-            <div data-aos="fade-right">
-              <h1 className="text-4xl font-bold">
-                Sistem Perpustakaan Modern
-              </h1>
-              <p className="mt-4">Kelola buku lebih mudah</p>
+          {/* SLIDE 1 */}
+          <div className="min-w-full relative z-10 h-full">
+            <img
+              src={banner1}
+              className="w-full h-full object-contain md:object-cover object-center bg-black"
+            />
+            <div className="absolute inset-0 bg-black/40"></div>
+
+            <div className="absolute inset-0 flex items-center justify-center text-white text-center px-4 md:px-0">
+              <div data-aos="fade-right">
+                <h1 className="text-4xl font-bold">Sistem Perpustakaan Modern</h1>
+                <p className="mt-4">Kelola buku lebih mudah</p>
+
+                <div className="mt-6 flex gap-3 justify-center">
+                  <button className="bg-blue-600 px-5 py-2 rounded-2xl hover:bg-blue-700 transition">
+                    Cari Buku
+                  </button>
+
+                  {/* 🔥 UPDATED DAFTAR BUTTON */}
+                  <button className="bg-transparent border border-blue-500 text-blue-500 px-5 py-2 rounded-2xl hover:bg-blue-600 hover:text-white transition">
+                    Daftar
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="min-w-full flex items-center justify-center bg-gradient-to-r from-blue-700 to-indigo-500 text-white">
-            <div data-aos="fade-up">
-              <h1 className="text-4xl font-bold">
-                Akses Cepat & Praktis
-              </h1>
-              <p className="mt-4">Semua data dalam genggaman</p>
+          {/* SLIDE 2 */}
+          <div className="min-w-full relative z-10 h-full">
+            <img
+              src={banner2}
+              className="w-full h-full object-contain md:object-cover object-center bg-black"
+            />
+            <div className="absolute inset-0 bg-black/40"></div>
+
+            <div className="absolute inset-0 flex items-center justify-center text-white text-center px-4 md:px-0">
+              <div data-aos="fade-up">
+                <h1 className="text-4xl font-bold">Akses Cepat & Praktis</h1>
+                <p className="mt-4">Semua data dalam genggaman</p>
+
+                <div className="mt-6 flex gap-3 justify-center">
+                  <button className="bg-blue-600 px-5 py-2 rounded-2xl hover:bg-blue-700 transition">
+                    Cari Buku
+                  </button>
+
+                  {/* 🔥 UPDATED DAFTAR BUTTON */}
+                  <button className="bg-transparent border border-blue-500 text-blue-500 px-5 py-2 rounded-2xl hover:bg-blue-600 hover:text-white transition">
+                    Daftar
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="min-w-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-cyan-400 text-white">
-            <div data-aos="fade-left">
-              <h1 className="text-4xl font-bold">
-                Digital Library
-              </h1>
-              <p className="mt-4">Solusi masa kini</p>
+          {/* SLIDE 3 */}
+          <div className="min-w-full relative z-10 h-full">
+            <img
+              src={banner3}
+              className="w-full h-full object-contain md:object-cover object-center bg-black"
+            />
+            <div className="absolute inset-0 bg-black/40"></div>
+
+            <div className="absolute inset-0 flex items-center justify-center text-white text-center px-4 md:px-0">
+              <div data-aos="fade-left">
+                <h1 className="text-4xl font-bold">Digital Library</h1>
+                <p className="mt-4">Solusi masa depan</p>
+
+                <div className="mt-6 flex gap-3 justify-center">
+                  <button className="bg-blue-600 px-5 py-2 rounded-2xl hover:bg-blue-700 transition">
+                    Cari Buku
+                  </button>
+
+                  {/* 🔥 UPDATED DAFTAR BUTTON */}
+                  <button className="bg-transparent border border-blue-500 text-blue-500 px-5 py-2 rounded-2xl hover:bg-blue-600 hover:text-white transition">
+                    Daftar
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
         </div>
 
-       {/* 🔥 TRANSISI CEKUNG KE ATAS (180°) */}
-<div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
-  <svg
-    viewBox="0 0 1440 320"
-    className="w-full h-[120px]"
-    preserveAspectRatio="none"
-  >
-    <path
-      fill="#ffffff"
-      d="
-        M0,0
-        C360,240 1080,240 1440,0
-        L1440,320 L0,320 Z
-      "
-    />
-  </svg>
-</div>
+        {/* WAVE */}
+        <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-30">
+          <svg
+            viewBox="0 0 1440 320"
+            className="w-full h-[140px] md:h-[120px]"
+            preserveAspectRatio="none"
+          >
+            <path
+              fill="#ffffff"
+              d="M0,0 C360,240 1080,240 1440,0 L1440,320 L0,320 Z"
+            />
+          </svg>
+        </div>
+
       </div>
 
-      {/* 🔥 CONTENT */}
+      {/* CONTENT */}
       <div className="bg-white py-20 px-6 md:px-16">
         <h2 className="text-2xl font-bold text-gray-800">
           Konten Selanjutnya

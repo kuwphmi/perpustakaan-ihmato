@@ -2,20 +2,20 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BukuJualController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+// halaman buku jual (API / listing buku)
 Route::get('/buku', [BukuJualController::class, 'index']);
+
+// halaman home dari teman kamu
+Route::get('/home', [HomeController::class, 'index']);
