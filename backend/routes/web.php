@@ -14,8 +14,40 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// halaman buku jual (API / listing buku)
+/* katalog*/
 Route::get('/buku', [BukuJualController::class, 'index']);
 
-// halaman home dari teman kamu
+/* HOME + FITUR UTAMA */
 Route::get('/home', [HomeController::class, 'index']);
+Route::get('/search', [HomeController::class, 'search']);
+Route::get('/book/{title}', [HomeController::class, 'detail']);
+Route::get('/riwayat', [HomeController::class, 'riwayat']);
+Route::get('/genre/{name}', [HomeController::class, 'genre']);
+
+/* WISHLIST*/
+Route::get('/wishlist', function () {
+    $wishlist = session()->get('wishlist', []);
+    return view('wishlist', compact('wishlist'));
+});
+
+Route::get('/wishlist/add', function (\Illuminate\Http\Request $request) {
+
+    $book = [
+        'title' => $request->title,
+        'author' => $request->author,
+        'cover' => $request->cover,
+    ];
+
+    $wishlist = session()->get('wishlist', []);
+    $wishlist[] = $book;
+
+    session()->put('wishlist', $wishlist);
+
+    return redirect()->back();
+});
+
+/* NOTIFIKASI*/
+Route::get('/notif', function () {
+    $notif = session()->get('notif', []);
+    return view('notif', compact('notif'));
+});
