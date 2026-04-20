@@ -76,7 +76,7 @@ function beranda() {
             Beranda
           </a>
           <a href="#" className="hover:text-blue-600 transition">
-            Buku
+            Keunggulan
           </a>
           <a href="#" className="hover:text-blue-600 transition">
             Pustakawan
@@ -255,71 +255,73 @@ function beranda() {
   
   <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
     
-    {/* 🔥 KIRI (TEXT + IMAGE) */}
-    <div>
-      <h2 className="text-3xl md:text-4xl font-bold text-gray-800 leading-snug">
-        Solusi Digitalisasi <br /> Perpustakaanmu
-      </h2>
+   {/* 🔥 KIRI (TEXT + IMAGE) */}
+<div className="ml-4 md:ml-12">
+  
+  <h2 className="text-3xl md:text-4xl font-bold text-gray-800 leading-snug">
+    Digitalisasi Mudah untuk  <br /> Perpustakaanmu
+  </h2>
 
-      {/* IMAGE (KAMU GANTI SENDIRI) */}
-      <div className="mt-6">
-        <img
+  {/* IMAGE */}
+  <div className="mt-6">
+    <img
   src={foto}
   alt="preview"
-  className="w-[220px] md:w-[260px] h-[300px] md:h-[360px] object-cover rounded-2xl shadow-lg"
+  data-aos="fade-right"
+  className="custom-rotate-img w-[220px] md:w-[260px] h-[300px] md:h-[360px] object-cover rounded-2xl shadow-lg"
 />
-      </div>
-    </div>
-
-   {/* 🔥 KANAN (CARD FITUR) */}
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-
-  {/* CARD 1 */}
-  <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
-    <FiDollarSign className="text-3xl text-blue-600 mb-3" />
-    <h3 className="font-semibold text-gray-800">
-      Biaya Investasi Sangat Kecil
-    </h3>
-    <p className="text-sm text-gray-500 mt-2">
-      Tidak membutuhkan ruangan khusus, rak buku, server, dan infrastruktur lainnya
-    </p>
-  </div>
-
-  {/* CARD 2 */}
-  <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
-    <FiUser className="text-3xl text-blue-600 mb-3" />
-    <h3 className="font-semibold text-gray-800">
-      User Friendly
-    </h3>
-    <p className="text-sm text-gray-500 mt-2">
-      Mudah digunakan oleh siapa pun dan bisa diakses di semua perangkat
-    </p>
-  </div>
-
-  {/* CARD 3 */}
-  <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
-    <FiBookOpen className="text-3xl text-blue-600 mb-3" />
-    <h3 className="font-semibold text-gray-800">
-      Konten Favorit Terlengkap
-    </h3>
-    <p className="text-sm text-gray-500 mt-2">
-      Ribuan konten tersedia sesuai kebutuhanmu
-    </p>
-  </div>
-
-  {/* CARD 4 */}
-  <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
-    <FiShield className="text-3xl text-blue-600 mb-3" />
-    <h3 className="font-semibold text-gray-800">
-      Full Support System
-    </h3>
-    <p className="text-sm text-gray-500 mt-2">
-      Jaminan operasional dengan tim terbaik
-    </p>
   </div>
 
 </div>
 
+    {/* 🔥 KANAN (CARD FITUR) */}
+   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:-ml-50 md:mt-25">
+
+      {/* CARD 1 */}
+      <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
+        <FiDollarSign className="text-3xl text-blue-600 mb-3" />
+        <h3 className="font-semibold text-gray-800">
+          Hemat Biaya Operasional
+        </h3>
+        <p className="text-sm text-gray-500 mt-2">
+          Kelola perpustakaan tanpa perlu infrastruktur rumit seperti server atau ruang khusus.
+        </p>
+      </div>
+
+      {/* CARD 2 */}
+      <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
+        <FiUser className="text-3xl text-blue-600 mb-3" />
+        <h3 className="font-semibold text-gray-800">
+          Mudah Digunakan
+        </h3>
+        <p className="text-sm text-gray-500 mt-2">
+          Dirancang agar sederhana dan nyaman digunakan oleh siapa saja di berbagai perangkat.
+        </p>
+      </div>
+
+      {/* CARD 3 */}
+      <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
+        <FiBookOpen className="text-3xl text-blue-600 mb-3" />
+        <h3 className="font-semibold text-gray-800">
+          Koleksi Lengkap & Variatif
+        </h3>
+        <p className="text-sm text-gray-500 mt-2">
+          Beragam pilihan konten tersedia untuk memenuhi kebutuhan bacaanmu.
+        </p>
+      </div>
+
+      {/* CARD 4 */}
+      <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
+        <FiShield className="text-3xl text-blue-600 mb-3" />
+        <h3 className="font-semibold text-gray-800">
+          Dukungan Penuh & Terpercaya
+        </h3>
+        <p className="text-sm text-gray-500 mt-2">
+          Didukung oleh tim profesional yang siap membantu kelancaran operasional.
+        </p>
+      </div>
+
+    </div>
   </div>
 </div>
 
