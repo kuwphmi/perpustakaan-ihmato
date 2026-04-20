@@ -1,7 +1,16 @@
-import Beranda from "./pages/beranda"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Beranda from "./pages/beranda";
+import Login from "./pages/login";
 
 function App() {
-  return <Beranda />
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/beranda" element={<Beranda />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

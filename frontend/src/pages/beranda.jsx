@@ -1,332 +1,283 @@
-import AOS from "aos"
-import "aos/dist/aos.css"
-import { useEffect, useState } from "react"
-import { FiMenu, FiX } from "react-icons/fi"
-import logo from "../assets/logo.png"
-import { FiDollarSign, FiUser, FiBookOpen, FiShield } from "react-icons/fi"
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect, useState } from "react";
+import { FiMenu, FiX } from "react-icons/fi";
+import logo from "../assets/logo.png";
+import { FiDollarSign, FiUser, FiBookOpen, FiShield, FiSearch, FiArrowRight } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
+import banner1 from "../assets/banner1.png";
+import banner2 from "../assets/banner2.png";
+import banner3 from "../assets/banner3.png";
+import foto from "../assets/foto1beranda.png";
 
-import banner1 from "../assets/banner1.png"
-import banner2 from "../assets/banner2.png"
-import banner3 from "../assets/banner3.png"
-import foto from "../assets/foto1beranda.png"
-
-function beranda() {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [currentSlide, setCurrentSlide] = useState(0)
-
-  useEffect(() => {
-    AOS.init({
-      duration: 900,
-      once: true,
-      easing: "ease-out-cubic",
-    })
-  }, [])
+function Beranda() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
+    AOS.init({ duration: 900, once: true, easing: "ease-out-cubic" });
+  }, []);
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % 3)
-    }, 4000)
+      setCurrentSlide((prev) => (prev + 1) % 3);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
-    return () => clearInterval(interval)
-  }, [])
+  const slides = [
+    {
+      img: banner1,
+      title: "Sistem Perpustakaan Modern",
+      subtitle: "Kelola buku lebih mudah, cepat, dan efisien",
+      anim: "fade-right",
+    },
+    {
+      img: banner2,
+      title: "Akses Cepat & Praktis",
+      subtitle: "Semua data koleksi dalam satu genggaman",
+      anim: "fade-up",
+    },
+    {
+      img: banner3,
+      title: "Digital Library",
+      subtitle: "Solusi perpustakaan masa depan",
+      anim: "fade-left",
+    },
+  ];
+
+  const features = [
+    {
+      icon: <FiDollarSign className="text-2xl text-blue-600" />,
+      title: "Hemat Biaya Operasional",
+      desc: "Kelola perpustakaan tanpa perlu infrastruktur rumit seperti server atau ruang khusus.",
+    },
+    {
+      icon: <FiUser className="text-2xl text-blue-600" />,
+      title: "Mudah Digunakan",
+      desc: "Dirancang agar sederhana dan nyaman digunakan oleh siapa saja di berbagai perangkat.",
+    },
+    {
+      icon: <FiBookOpen className="text-2xl text-blue-600" />,
+      title: "Koleksi Lengkap & Variatif",
+      desc: "Beragam pilihan konten tersedia untuk memenuhi kebutuhan bacaanmu.",
+    },
+    {
+      icon: <FiShield className="text-2xl text-blue-600" />,
+      title: "Dukungan Penuh & Terpercaya",
+      desc: "Didukung oleh tim profesional yang siap membantu kelancaran operasional.",
+    },
+  ];
+
+  const stats = [
+    { value: "10.000+", label: "Koleksi Buku" },
+    { value: "5.000+", label: "Pengguna Aktif" },
+    { value: "200+", label: "Perpustakaan" },
+    { value: "99%", label: "Kepuasan Pengguna" },
+  ];
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "transparent",
-        transition: "0.3s",
-      }}
-    >
-
-      {/* NAVBAR */}
-      <div
-        className={`fixed top-0 left-0 w-full flex items-center justify-between px-4 md:px-10 py-4 z-50 transition-all duration-500 ease-in-out border-b ${
-          scrolled
-            ? "bg-black/80 border-white/10 shadow-lg"
-            : "bg-transparent border-white/20"
-        }`}
-      >
-        {/* LOGO */}
-        <div className="flex items-center gap-2">
-          <img
-            src={logo}
-            alt="logo"
-            className="w-8 h-8 md:w-10 md:h-10 object-contain"
-          />
-          <h1 className="font-semibold text-blue-600 text-sm md:text-base">
-            BukuIn
-          </h1>
-        </div>
-
-        {/* DESKTOP */}
-        <div className="hidden md:flex items-center gap-6 text-white">
-          <a href="#" className="text-blue-600 font-semibold">
-            Beranda
-          </a>
-          <a href="#" className="hover:text-blue-600 transition">
-            Keunggulan
-          </a>
-          <a href="#" className="hover:text-blue-600 transition">
-            Pustakawan
-          </a>
-
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-2xl cursor-pointer transition-all duration-300 hover:bg-blue-700 hover:scale-105">
-            Login
-          </button>
-        </div>
-
-        {/* MOBILE */}
-        <div className="md:hidden flex items-center gap-1 text-white">
-          <button className="bg-blue-600 px-3 py-1 rounded-2xl text-sm cursor-pointer transition-all duration-300 hover:bg-blue-700 hover:scale-105">
-            Login
-          </button>
-
-          <button onClick={() => setMenuOpen(true)} className="text-2xl">
-            <FiMenu />
-          </button>
-        </div>
-      </div>
-
-      <div className="h-20"></div>
-
-      {/* MOBILE MENU */}
-      <div
-        className={`fixed top-0 left-0 w-full h-full z-50 transform transition-transform duration-300 ${
-          menuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-        style={{
-          backgroundColor: "#ffffff",
-          color: "#1f2937",
-        }}
-      >
-        <div className="flex items-center justify-between px-6 py-4 border-b">
+    <div className="min-h-screen bg-white font-sans">
+      {/* ── NAVBAR ─────────────────────────────────────────────── */}
+      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? "bg-white shadow-md border-b border-gray-100" : "bg-transparent"}`}>
+        <div className="max-w-7xl mx-auto px-4 md:px-10 py-3 flex items-center justify-between">
+          {/* Logo */}
           <div className="flex items-center gap-2">
-            <img src={logo} className="w-8 h-8 object-contain" />
-            <h1 className="font-semibold text-blue-600">BukuIn</h1>
+            <img src={logo} alt="logo" className="w-8 h-8 object-contain" />
+            <span className={`font-bold text-base tracking-tight ${scrolled ? "text-blue-700" : "text-white"}`}>BukuIn</span>
           </div>
 
-          <button
-            onClick={() => setMenuOpen(false)}
-            className="text-2xl cursor-pointer"
-          >
-            <FiX />
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center gap-8">
+            {["Beranda", "Keunggulan", "Pustakawan"].map((item, i) => (
+              <a
+                key={i}
+                href="#"
+                className={`text-sm font-medium transition-colors ${i === 0 ? (scrolled ? "text-blue-600" : "text-white font-semibold") : scrolled ? "text-gray-600 hover:text-blue-600" : "text-white/80 hover:text-white"}`}
+              >
+                {item}
+              </a>
+            ))}
+            <button onClick={() => navigate("/")} className="bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-sm font-medium px-5 py-2 rounded-full transition-all duration-200">
+              Login
+            </button>
+          </div>
+
+          {/* Mobile */}
+          <div className="md:hidden flex items-center gap-2">
+            <button onClick={() => navigate("/")} className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-4 py-1.5 rounded-full transition-all">
+              Login
+            </button>
+            <button onClick={() => setMenuOpen(true)} className={`text-2xl ${scrolled ? "text-gray-700" : "text-white"}`}>
+              <FiMenu />
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* ── MOBILE SIDEBAR ──────────────────────────────────────── */}
+      <div className={`fixed inset-0 z-50 transform transition-transform duration-300 ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        <div className="bg-white h-full w-72 shadow-2xl flex flex-col">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <div className="flex items-center gap-2">
+              <img src={logo} className="w-8 h-8 object-contain" />
+              <span className="font-bold text-blue-700">BukuIn</span>
+            </div>
+            <button onClick={() => setMenuOpen(false)} className="text-2xl text-gray-500">
+              <FiX />
+            </button>
+          </div>
+          <div className="flex flex-col gap-1 px-4 py-6">
+            {["Beranda", "Keunggulan", "Pustakawan"].map((item, i) => (
+              <a key={i} href="#" className={`px-4 py-3 rounded-lg text-sm font-medium transition ${i === 0 ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:bg-gray-50"}`}>
+                {item}
+              </a>
+            ))}
+          </div>
+          <div className="px-4 mt-auto pb-8">
+            <button
+              onClick={() => {
+                setMenuOpen(false);
+                navigate("/");
+              }}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-full font-medium text-sm transition"
+            >
+              Login
+            </button>
+          </div>
+        </div>
+        {/* Overlay */}
+        <div className="absolute inset-0 -z-10 bg-black/40" onClick={() => setMenuOpen(false)} />
+      </div>
+
+      {/* ── HERO SLIDER ─────────────────────────────────────────── */}
+      <div className="relative w-full h-screen overflow-hidden">
+        <div className="flex h-full transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+          {slides.map((slide, i) => (
+            <div key={i} className="min-w-full relative h-full">
+              <img src={slide.img} className="w-full h-full object-cover" alt={slide.title} />
+              <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/60" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+                <div data-aos={slide.anim}>
+                  <p className="text-blue-300 text-sm font-medium tracking-widest uppercase mb-3">Perpustakaan Digital</p>
+                  <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight mb-4">{slide.title}</h1>
+                  <p className="text-white/80 text-base md:text-lg mb-8 max-w-xl mx-auto">{slide.subtitle}</p>
+                  <div className="flex gap-3 justify-center flex-wrap">
+                    <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white px-6 py-2.5 rounded-full font-medium text-sm transition-all">
+                      <FiSearch className="text-base" /> Cari Buku
+                    </button>
+                    <button onClick={() => navigate("/")} className="flex items-center gap-2 border border-white/60 hover:bg-white/10 text-white px-6 py-2.5 rounded-full font-medium text-sm transition-all">
+                      Daftar Sekarang <FiArrowRight />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Slide Indicators */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          {slides.map((_, i) => (
+            <button key={i} onClick={() => setCurrentSlide(i)} className={`h-1.5 rounded-full transition-all duration-300 ${i === currentSlide ? "w-8 bg-blue-400" : "w-2 bg-white/40"}`} />
+          ))}
+        </div>
+
+        {/* Wave bottom */}
+        <div className="absolute bottom-0 left-0 w-full z-10 hidden md:block">
+          <svg viewBox="0 0 1440 80" className="w-full" preserveAspectRatio="none">
+            <path fill="#ffffff" d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" />
+          </svg>
+        </div>
+        <div className="absolute bottom-0 left-0 w-full h-8 bg-white z-10 md:hidden" />
+      </div>
+
+      {/* ── STATS ───────────────────────────────────────────────── */}
+      <div className="bg-white py-10">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {stats.map((s, i) => (
+              <div key={i} data-aos="fade-up" data-aos-delay={i * 100} className="text-center">
+                <p className="text-2xl md:text-3xl font-bold text-blue-600">{s.value}</p>
+                <p className="text-sm text-gray-500 mt-1">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── FITUR SECTION ───────────────────────────────────────── */}
+      <div className="bg-blue-50 py-20 px-6 md:px-10">
+        <div className="max-w-7xl mx-auto">
+          {/* Heading */}
+          <div className="text-center mb-12" data-aos="fade-up">
+            <p className="text-blue-600 text-sm font-semibold tracking-widest uppercase mb-2">Mengapa BukuIn?</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+              Digitalisasi Mudah untuk <br className="hidden md:block" /> Perpustakaanmu
+            </h2>
+            <p className="text-gray-500 mt-3 max-w-xl mx-auto text-sm leading-relaxed">Kami hadir untuk mempermudah pengelolaan perpustakaan secara digital, efisien, dan modern.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            {/* Foto */}
+            <div data-aos="fade-right" className="flex justify-center">
+              <img src={foto} alt="preview" className="w-64 md:w-80 h-80 md:h-96 object-cover rounded-3xl shadow-xl" />
+            </div>
+
+            {/* Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {features.map((f, i) => (
+                <div key={i} data-aos="fade-up" data-aos-delay={i * 100} className="bg-white p-5 rounded-2xl shadow-sm hover:shadow-md border border-gray-100 transition-all duration-200 hover:-translate-y-1">
+                  <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mb-3">{f.icon}</div>
+                  <h3 className="font-semibold text-gray-800 text-sm mb-1.5">{f.title}</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">{f.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── CTA SECTION ─────────────────────────────────────────── */}
+      <div className="bg-blue-700 py-16 px-6 text-center" data-aos="fade-up">
+        <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Siap Digitalisasi Perpustakaanmu?</h2>
+        <p className="text-blue-200 text-sm mb-7 max-w-md mx-auto">Bergabunglah bersama ribuan perpustakaan yang telah mempercayai BukuIn.</p>
+        <div className="flex gap-3 justify-center flex-wrap">
+          <button onClick={() => navigate("/")} className="bg-white hover:bg-blue-50 active:scale-95 text-blue-700 font-semibold px-7 py-2.5 rounded-full text-sm transition-all">
+            Mulai Gratis
           </button>
-        </div>
-
-        <div className="flex flex-col items-start gap-6 px-6 py-10 text-lg">
-          <a href="#" className="text-blue-600 font-semibold cursor-pointer">
-            Beranda
-          </a>
-          <a href="#" className="hover:text-blue-600 transition cursor-pointer">
-            Buku user
-          </a>
-          <a href="#" className="hover:text-blue-600 transition cursor-pointer">
-            Pustakawan
-          </a>
+          <button className="border border-white/50 hover:bg-white/10 text-white font-medium px-7 py-2.5 rounded-full text-sm transition-all">Pelajari Lebih Lanjut</button>
         </div>
       </div>
 
-      {/* BANNER SLIDER */}
-      <div className="relative w-full h-[90vh] overflow-hidden mt-[-80px]">
-
-        <div
-          className="flex h-full transition-transform duration-700"
-          style={{
-            transform: `translateX(-${currentSlide * 100}%)`,
-          }}
-        >
-
-          {/* SLIDE 1 */}
-          <div className="min-w-full relative z-10 h-full">
-            <img
-              src={banner1}
-              className="w-full h-full object-cover object-center bg-black"
-            />
-            <div className="absolute inset-0 bg-black/40"></div>
-
-            <div className="absolute inset-0 flex items-center justify-center text-white text-center px-4 md:px-0">
-              <div data-aos="fade-right">
-                <h1 className="text-4xl font-bold">Sistem Perpustakaan Modern</h1>
-                <p className="mt-4">Kelola buku lebih mudah</p>
-
-                <div className="mt-6 flex gap-3 justify-center">
-                  <button className="bg-blue-600 px-5 py-2 rounded-2xl hover:bg-blue-700 transition">
-                    Cari Buku
-                  </button>
-
-                  <button className="bg-transparent border border-blue-500 text-blue-500 px-5 py-2 rounded-2xl hover:bg-blue-600 hover:text-white transition">
-                    Daftar
-                  </button>
-                </div>
-              </div>
-            </div>
+      {/* ── FOOTER ──────────────────────────────────────────────── */}
+      <footer className="bg-gray-900 text-white py-10 px-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="logo" className="w-7 h-7 object-contain opacity-80" />
+            <span className="font-bold text-blue-400">BukuIn</span>
           </div>
-
-          {/* SLIDE 2 */}
-          <div className="min-w-full relative z-10 h-full">
-            <img
-              src={banner2}
-              className="w-full h-full object-cover object-center bg-black"
-            />
-            <div className="absolute inset-0 bg-black/40"></div>
-
-            <div className="absolute inset-0 flex items-center justify-center text-white text-center px-4 md:px-0">
-              <div data-aos="fade-up">
-                <h1 className="text-4xl font-bold">Akses Cepat & Praktis</h1>
-                <p className="mt-4">Semua data dalam genggaman</p>
-
-                <div className="mt-6 flex gap-3 justify-center">
-                  <button className="bg-blue-600 px-5 py-2 rounded-2xl hover:bg-blue-700 transition">
-                    Cari Buku
-                  </button>
-
-                  <button className="bg-transparent border border-blue-500 text-blue-500 px-5 py-2 rounded-2xl hover:bg-blue-600 hover:text-white transition">
-                    Daftar
-                  </button>
-                </div>
-              </div>
-            </div>
+          <p className="text-xs text-gray-500 text-center">© {new Date().getFullYear()} BukuIn. Semua hak dilindungi.</p>
+          <div className="flex gap-5 text-xs text-gray-400">
+            <a href="#" className="hover:text-white transition">
+              Kebijakan Privasi
+            </a>
+            <a href="#" className="hover:text-white transition">
+              Syarat & Ketentuan
+            </a>
           </div>
-
-          {/* SLIDE 3 */}
-          <div className="min-w-full relative z-10 h-full">
-            <img
-              src={banner3}
-              className="w-full h-full object-cover bg-black"
-            />
-            <div className="absolute inset-0 bg-black/40"></div>
-
-            <div className="absolute inset-0 flex items-center justify-center text-white text-center px-4 md:px-0">
-              <div data-aos="fade-left">
-                <h1 className="text-4xl font-bold">Digital Library</h1>
-                <p className="mt-4">Solusi masa depan</p>
-
-                <div className="mt-6 flex gap-3 justify-center">
-                  <button className="bg-blue-600 px-5 py-2 rounded-2xl hover:bg-blue-700 transition">
-                    Cari Buku
-                  </button>
-
-                  {/* 🔥 UPDATED DAFTAR BUTTON */}
-                  <button className="bg-transparent border border-blue-500 text-blue-500 px-5 py-2 rounded-2xl hover:bg-blue-600 hover:text-white transition">
-                    Daftar
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
-
-        {/* 🔥 WAVE DESKTOP */}
-<div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-30 hidden md:block">
-  <svg
-    viewBox="0 0 1440 320"
-    className="w-full h-[120px]"
-    preserveAspectRatio="none"
-  >
-    <path
-      fill="#ffffff"
-      d="M0,0 C360,240 1080,240 1440,0 L1440,320 L0,320 Z"
-    />
-  </svg>
-</div>
-
-{/* 🔥 GARIS LURUS MOBILE */}
-<div className="absolute bottom-0 left-0 w-full z-30 md:hidden">
-  <div className="w-full h-[40px] bg-white"></div>
-</div>
-
-      </div>
-
-      {/* 🔥 CONTENT SECTION */}
-<div className="bg-blue-50 py-20 px-6 md:px-16">
-  
-  <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
-    
-   {/* 🔥 KIRI (TEXT + IMAGE) */}
-<div className="ml-4 md:ml-12">
-  
-  <h2 className="text-3xl md:text-4xl font-bold text-gray-800 leading-snug">
-    Digitalisasi Mudah untuk  <br /> Perpustakaanmu
-  </h2>
-
-  {/* IMAGE */}
-  <div className="mt-6">
-    <img
-  src={foto}
-  alt="preview"
-  data-aos="fade-right"
-  className="custom-rotate-img w-[220px] md:w-[260px] h-[300px] md:h-[360px] object-cover rounded-2xl shadow-lg"
-/>
-  </div>
-
-</div>
-
-    {/* 🔥 KANAN (CARD FITUR) */}
-   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:-ml-50 md:mt-25">
-
-      {/* CARD 1 */}
-      <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
-        <FiDollarSign className="text-3xl text-blue-600 mb-3" />
-        <h3 className="font-semibold text-gray-800">
-          Hemat Biaya Operasional
-        </h3>
-        <p className="text-sm text-gray-500 mt-2">
-          Kelola perpustakaan tanpa perlu infrastruktur rumit seperti server atau ruang khusus.
-        </p>
-      </div>
-
-      {/* CARD 2 */}
-      <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
-        <FiUser className="text-3xl text-blue-600 mb-3" />
-        <h3 className="font-semibold text-gray-800">
-          Mudah Digunakan
-        </h3>
-        <p className="text-sm text-gray-500 mt-2">
-          Dirancang agar sederhana dan nyaman digunakan oleh siapa saja di berbagai perangkat.
-        </p>
-      </div>
-
-      {/* CARD 3 */}
-      <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
-        <FiBookOpen className="text-3xl text-blue-600 mb-3" />
-        <h3 className="font-semibold text-gray-800">
-          Koleksi Lengkap & Variatif
-        </h3>
-        <p className="text-sm text-gray-500 mt-2">
-          Beragam pilihan konten tersedia untuk memenuhi kebutuhan bacaanmu.
-        </p>
-      </div>
-
-      {/* CARD 4 */}
-      <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
-        <FiShield className="text-3xl text-blue-600 mb-3" />
-        <h3 className="font-semibold text-gray-800">
-          Dukungan Penuh & Terpercaya
-        </h3>
-        <p className="text-sm text-gray-500 mt-2">
-          Didukung oleh tim profesional yang siap membantu kelancaran operasional.
-        </p>
-      </div>
-
+      </footer>
     </div>
-  </div>
-</div>
-
-    </div>
-  )
+  );
 }
-
-export default beranda
+export default Beranda;

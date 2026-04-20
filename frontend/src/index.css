@@ -1,22 +1,16 @@
-/* 🔥 TAILWIND */
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
-/* 🔥 FONT (WAJIB kalau gak pakai config) */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-/* 🔥 GLOBAL */
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   background: #f5f7fb;
   overflow-x: hidden;
 }
 
-/* 🔥 SMOOTH SCROLL */
 html {
   scroll-behavior: smooth;
 }
 
-/* 🔥 OPTIMASI AOS */
 [data-aos] {
   will-change: transform, opacity;
 }
