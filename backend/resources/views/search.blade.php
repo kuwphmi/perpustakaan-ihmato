@@ -40,6 +40,7 @@
 
     <!-- 🔙 BACK SIMPLE -->
 <a href="/book/{{ urlencode($b['title']) }}?from=search">
+    
     <!-- 🔍 SEARCH -->
     <div class="d-flex mb-3">
         <input type="text" id="search" value="{{ $q ?? '' }}" class="form-control me-2" placeholder="Cari buku...">
