@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BukuJualController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KeranjangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,3 +52,6 @@ Route::get('/notif', function () {
     $notif = session()->get('notif', []);
     return view('notif', compact('notif'));
 });
+
+/*BELANJA*/
+Route::get('/belanja', [BukuJualController::class, 'index']);
