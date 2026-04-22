@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BukuJualController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\KeranjangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +23,8 @@ Route::get('/search', [HomeController::class, 'search']);
 Route::get('/book/{title}', [HomeController::class, 'detail']);
 Route::get('/riwayat', [HomeController::class, 'riwayat']);
 Route::get('/genre/{name}', [HomeController::class, 'genre']);
+Route::get('/checkout', [HomeController::class, 'checkout']);
 
-/* WISHLIST*/
 Route::get('/wishlist', function () {
     $wishlist = session()->get('wishlist', []);
     return view('wishlist', compact('wishlist'));
@@ -53,5 +52,3 @@ Route::get('/notif', function () {
     return view('notif', compact('notif'));
 });
 
-/*BELANJA*/
-Route::get('/belanja', [BukuJualController::class, 'index']);

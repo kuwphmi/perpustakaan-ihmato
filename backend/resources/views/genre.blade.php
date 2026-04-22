@@ -1,62 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Genre - {{ $name }}</title>
+    <title>Genre</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        .card {
-            height: 100%;
-        }
-
-        .book-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
+        .card img {
+            height: 200px;
+            object-fit: cover;
         }
     </style>
 </head>
 <body>
 
-<!-- 🔝 NAVBAR -->
-<nav class="navbar navbar-dark bg-dark px-3">
-    <a href="/home" class="text-white text-decoration-none">← Home</a>
-    <span class="navbar-brand ms-3">{{ $name }}</span>
-</nav>
-
 <div class="container mt-4">
 
-    <h5 class="mb-3">Genre: {{ $name }}</h5>
+    <a href="/home">← Kembali</a>
 
-    <!-- 📚 BOOK GRID (VERTICAL SCROLL) -->
-    <div class="book-grid">
+    <h5 class="mt-3">Genre: {{ $genre }}</h5>
 
-        @forelse($books as $b)
-        <a 
-            href="/book/{{ urlencode($b['title'] ?? '') }}?from=genre&genre={{ urlencode($name) }}" 
-            class="text-decoration-none text-dark"
-        >
+    <div class="row">
+        @foreach($books as $b)
+        <div class="col-md-2 mb-3">
+            <div class="card"
+                data-bs-toggle="modal"
+                data-bs-target="#detailModal"
+                onclick="showDetail('{{ addslashes($b['title']) }}','{{ addslashes($b['author']) }}','{{ $b['cover'] }}')">
 
-            <div class="card">
+                <img src="https://covers.openlibrary.org/b/id/{{ $b['cover'] }}-M.jpg">
 
-                @if(!empty($b['cover_i']))
-                    <img src="https://covers.openlibrary.org/b/id/{{ $b['cover_i'] }}-M.jpg" class="card-img-top">
-                @endif
-
-                <div class="card-body">
-                    <small>{{ $b['title'] ?? 'No Title' }}</small>
+                <div class="p-2">
+                    <small>{{ $b['title'] }}</small>
                 </div>
-
             </div>
-
-        </a>
-        @empty
-            <p>Tidak ada buku ditemukan.</p>
-        @endforelse
-
+        </div>
+        @endforeach
     </div>
 
 </div>
+
+<!-- MODAL -->
+<div class="modal fade" id="detailModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content p-3">
+
+        <div class="row">
+            <div class="col-md-4">
+                <img id="modalCover" class="img-fluid">
+            </div>
+
+            <div class="col-md-8">
+                <h4 id="modalTitle"></h4>
+                <p><b>Author:</b> <span id="modalAuthor"></span></p>
+
+                <button class="btn btn-danger">❤️ Wishlist</button>
+                <button class="btn btn-primary">📚 Pinjam</button>
+            </div>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function showDetail(title, author, cover) {
+    document.getElementById("modalTitle").innerText = title;
+    document.getElementById("modalAuthor").innerText = author;
+
+    document.getElementById("modalCover").src =
+        cover ? "https://covers.openlibrary.org/b/id/" + cover + "-L.jpg"
+              : "https://via.placeholder.com/200x300";
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
