@@ -16,6 +16,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/* AUTH */
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout']);
+
 /* katalog*/
 Route::get('/buku', [BukuJualController::class, 'index']);
 
@@ -25,8 +30,9 @@ Route::get('/search', [HomeController::class, 'search']);
 Route::get('/book/{title}', [HomeController::class, 'detail']);
 Route::get('/riwayat', [HomeController::class, 'riwayat']);
 Route::get('/genre/{name}', [HomeController::class, 'genre']);
+Route::get('/checkout', [HomeController::class, 'checkout']);
 
-/* WISHLIST*/
+/* WISHLIST */
 Route::get('/wishlist', function () {
     $wishlist = session()->get('wishlist', []);
     return view('wishlist', compact('wishlist'));
@@ -48,11 +54,11 @@ Route::get('/wishlist/add', function (\Illuminate\Http\Request $request) {
     return redirect()->back();
 });
 
-/* NOTIFIKASI*/
+/* NOTIFIKASI */
 Route::get('/notif', function () {
     $notif = session()->get('notif', []);
     return view('notif', compact('notif'));
 });
 
-/*BELANJA*/
+/* BELANJA */
 Route::get('/belanja', [BukuJualController::class, 'index']);

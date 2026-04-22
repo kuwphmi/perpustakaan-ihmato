@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class HomeController extends Controller
 {
@@ -14,7 +16,7 @@ class HomeController extends Controller
 
         $books = $data['docs'] ?? [];
 
-        // BEST
+        // BEST BOOK
         $bestBooks = [];
         foreach (array_slice($books, 0, 10) as $item) {
             $bestBooks[] = [
@@ -39,24 +41,23 @@ class HomeController extends Controller
         }
 
         // GENRE
-$genres = [
-    'Art',
-    'Science Fiction',
-    'Fantasy',
-    'Biographies',
-    'Recipes',
-    'Romance',
-    'Textbooks',
-    'Children',
-    'Medicine',
-    'Religion',
-    'Mystery and Detective',
-    'Plays',
-    'Music',
-    'Science'
-];
+    $genres = [
+        'Art',
+        'Science Fiction',
+        'Fantasy',
+        'Biographies',
+        'Recipes',
+        'Romance',
+        'Textbooks',
+        'Children',
+        'Medicine',
+        'Religion',
+        'Mystery and Detective',
+        'Plays',
+        'Music',
+        'Science'
+    ];
 
-// kalau kosong, kasih default biar tetap tampil
 if (empty($genres)) {
     $genres = ['Fiction', 'Romance', 'Science', 'History', 'Technology'];
 }
@@ -116,7 +117,7 @@ $genres = array_slice(array_unique($genres), 0, 10);
 }
 public function riwayat()
 {
-    // 🔥 sementara dummy dulu
+    // masih dummy 
     $history = [
         [
             'title' => 'Harry Potter',
@@ -154,5 +155,29 @@ function addNotif($message)
     ];
 
     session()->put('notif', $notif);
+}
+public function checkout()
+{
+    // 🔥 CONFIG MIDTRANS
+    Config::$serverKey = config('midtrans.serverKey');
+    Config::$isProduction = config('midtrans.isProduction');
+    Config::$isSanitized = true;
+    Config::$is3ds = true;
+
+    // 🔥 DATA TRANSAKSI
+    $params = [
+        'transaction_details' => [
+            'order_id' => 'ORDER-' . time(),
+            'gross_amount' => 10000, // harga (contoh)
+        ],
+        'customer_details' => [
+            'first_name' => 'User',
+            'email' => 'user@gmail.com',
+        ],
+    ];
+    
+    $snapToken = Snap::getSnapToken($params);
+
+    return view('checkout', compact('snapToken'));
 }
 }
