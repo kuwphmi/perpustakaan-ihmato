@@ -3,55 +3,85 @@
 <head>
     <title>Belanja Buku</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .top-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .top-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .status-box {
+            padding: 6px 10px;
+            background: #f1f1f1;
+            border-radius: 8px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .search-input {
+            max-width: 300px;
+        }
+    </style>
 </head>
+
 <body>
 
-<!-- 🔵 NAVBAR (TAMBAHAN BARU - TIDAK MENGHAPUS YANG ADA) -->
-<nav class="navbar navbar-light bg-white shadow-sm px-4 py-3 mb-4">
-    <div class="container-fluid">
+<div class="container mt-4">
 
-        <span class="navbar-brand fw-bold text-primary">
-            📚 BukuIn Store
-        </span>
+    <!-- TOP BAR -->
+    <div class="top-bar">
 
-        <div class="d-flex gap-3 align-items-center">
+        <!-- LEFT -->
+        <div class="top-left">
 
-            <!-- STATUS -->
-            <div class="dropdown">
-                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
-                    Status
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">Diproses</a></li>
-                    <li><a class="dropdown-item" href="#">Dikirim</a></li>
-                    <li><a class="dropdown-item" href="#">Selesai</a></li>
-                </ul>
+            <h2 class="m-0">🛒 Belanja Buku</h2>
+
+            <input
+                type="text"
+                class="form-control search-input"
+                placeholder="🔍 Cari buku..."
+            >
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="top-right">
+
+            <div class="status-box">
+                Status: <strong>Diproses</strong>
             </div>
 
-            <!-- 🛒 KERANJANG ATAS (HANYA LIHAT ISI) -->
-            <a href="/keranjang" class="btn btn-success btn-sm">
+            <!-- GLOBAL KERANJANG (TIDAK DIHAPUS) -->
+            <button class="btn btn-success btn-sm">
                 🛒 Keranjang
-                <span id="cartCount" class="badge bg-danger">0</span>
-            </a>
+            </button>
 
-            <!-- PROFIL -->
-            <a href="/profile" class="btn btn-primary btn-sm">
+            <button class="btn btn-primary btn-sm">
                 👤 Profil
-            </a>
+            </button>
 
         </div>
 
     </div>
-</nav>
-
-
-<div class="container mt-4">
-
-    <h2 class="mb-4">🛒 Belanja Buku</h2>
 
     @foreach($booksByGenre as $genre => $books)
 
-        <!-- 🏷 GENRE -->
         <h4 class="mt-5 mb-3">📚 {{ $genre }}</h4>
 
         <div class="row">
@@ -74,9 +104,10 @@
                         <p>💰 Rp {{ number_format($b['price'], 0, ',', '.') }}</p>
                         <p>📦 Stok: {{ $b['stock'] }}</p>
 
+                        <!-- ACTION BUTTONS -->
                         <div class="d-flex gap-2">
 
-                            <!-- 🛒 TOMBOL KERANJANG (TAMBAH KE BACKEND) -->
+                            <!-- KERANJANG (DATABASE CONNECT - JANGAN DIHAPUS) -->
                             <button class="btn btn-success btn-sm w-50"
                                 onclick="tambahKeranjang(
                                     '{{ $b['title'] }}',
@@ -86,7 +117,7 @@
                                 Keranjang
                             </button>
 
-                            <!-- Beli -->
+                            <!-- BELI -->
                             <button class="btn btn-primary btn-sm w-50">
                                 Beli
                             </button>
@@ -105,7 +136,7 @@
 
 </div>
 
-<!-- JS -->
+<!-- JS (TETAP PERTAHANKAN - CONNECT DB) -->
 <script>
 function tambahKeranjang(judul, gambar, harga) {
     fetch('http://localhost:8000/api/keranjang/tambah', {
@@ -115,6 +146,7 @@ function tambahKeranjang(judul, gambar, harga) {
         },
         body: JSON.stringify({
             id_pengguna: 1,
+            id_buku: judul,
             judul: judul,
             gambar: gambar,
             harga: harga
@@ -122,30 +154,14 @@ function tambahKeranjang(judul, gambar, harga) {
     })
     .then(res => res.json())
     .then(data => {
-        alert("Masuk keranjang!");
-        loadKeranjang(); // update badge
+        alert(data.message);
     })
     .catch(err => {
         console.error(err);
         alert('Gagal menambahkan ke keranjang');
     });
 }
-
-// 🔵 AMBIL JUMLAH KERANJANG UNTUK BADGE ATAS
-function loadKeranjang() {
-    fetch('http://localhost:8000/api/keranjang')
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById("cartCount").innerText = data.data.length;
-    })
-    .catch(err => console.log(err));
-}
-
-loadKeranjang();
-
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
