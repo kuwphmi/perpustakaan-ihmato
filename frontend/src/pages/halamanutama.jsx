@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   FiSearch,
   FiBell,
@@ -49,47 +50,55 @@ export default function HalamanUtama() {
       {/* HEADER BIRU (DESKTOP ONLY) */}
       <div className="hidden md:flex bg-blue-600 text-white px-10 py-3 items-center justify-end text-sm font-medium">
         <div className="flex gap-8">
-          {["Beranda", "Koleksi", "Belanja", "Riwayat"].map((item, i) => (
-            <p
+          {[
+            { name: "Beranda", path: "/halamanutama" },
+            { name: "Koleksi", path: "/koleksi" },
+            { name: "Belanja", path: "/belanja" },
+            { name: "Riwayat", path: "/riwayat" },
+          ].map((item, i) => (
+            <Link
               key={i}
+              to={item.path}
               className="relative cursor-pointer transition-all duration-300 hover:text-blue-200 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-white after:transition-all after:duration-300 hover:after:w-full"
             >
-              {item}
-            </p>
+              {item.name}
+            </Link>
           ))}
         </div>
       </div>
 
       {/* NAVBAR */}
-      <div className="flex items-center justify-between px-6 md:px-10 py-4 shadow bg-white sticky top-0 z-50">
+      <div className="bg-white shadow sticky top-0 z-50">
 
-        {/* LOGO */}
-        <div className="flex items-center gap-2">
-          <img src={logo} alt="logo" className="w-8 h-8" />
-          <h1 className="text-lg md:text-xl font-bold text-blue-600">
-          </h1>
-        </div>
+        <div className="max-w-6xl mx-auto flex items-center px-6 py-3">
 
-        {/* SEARCH */}
-        <div className="flex-1 flex justify-center px-4">
-          <div className="relative w-full max-w-md">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Cari buku favoritmu..."
-              className="w-full pl-10 pr-4 py-2 border rounded-full focus:outline-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
-            />
+          {/* LOGO */}
+          <div className="flex-shrink-0 mr-4">
+            <img src={logo} alt="logo" className="w-8 h-8" />
           </div>
-        </div>
 
-        {/* ICON */}
-        <div className="flex items-center gap-4">
-          <FiHeart className="text-xl text-gray-600 cursor-pointer hover:text-red-500 transition" />
-          <FiBell className="text-xl text-gray-600 cursor-pointer hover:text-yellow-500 transition" />
-
-          <div className="w-10 h-10 bg-blue-600 text-white flex items-center justify-center rounded-full">
-            R
+          {/* SEARCH */}
+          <div className="flex-1 flex justify-center">
+            <div className="relative w-full max-w-lg">
+              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Cari buku favoritmu..."
+                className="w-full pl-10 pr-4 py-2 border rounded-full focus:outline-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+            </div>
           </div>
+
+          {/* ICON */}
+          <div className="flex items-center gap-3 flex-shrink-0 ml-4">
+            <FiHeart className="text-xl text-gray-600 cursor-pointer hover:text-red-500 transition" />
+            <FiBell className="text-xl text-gray-600 cursor-pointer hover:text-yellow-500 transition" />
+
+            <div className="w-9 h-9 bg-blue-600 text-white flex items-center justify-center rounded-full text-sm">
+              R
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -119,28 +128,36 @@ export default function HalamanUtama() {
           ))}
         </div>
 
-        {/* MOBILE NAVBAR (ICON ONLY - MODERN EFFECT) */}
+        {/* MOBILE NAVBAR (ICON ONLY) */}
 <div className="md:hidden fixed bottom-0 left-0 w-full bg-blue-600 text-white border-t border-blue-500 flex justify-around items-center py-3 z-50">
 
-  <div className="flex flex-col items-center justify-center cursor-pointer transition-all duration-200 active:scale-90 hover:text-white/80">
+  <Link
+    to="/halamanutama"
+    className="flex items-center justify-center transition-all duration-200 active:scale-90 hover:text-white/80"
+  >
     <FiHome className="text-2xl" />
-    <span className="text-[10px] mt-1">Home</span>
-  </div>
+  </Link>
 
-  <div className="flex flex-col items-center justify-center cursor-pointer transition-all duration-200 active:scale-90 hover:text-white/80">
+  <Link
+    to="/koleksi"
+    className="flex items-center justify-center transition-all duration-200 active:scale-90 hover:text-white/80"
+  >
     <FiBook className="text-2xl" />
-    <span className="text-[10px] mt-1">Book</span>
-  </div>
+  </Link>
 
-  <div className="flex flex-col items-center justify-center cursor-pointer transition-all duration-200 active:scale-90 hover:text-white/80">
+  <Link
+    to="/belanja"
+    className="flex items-center justify-center transition-all duration-200 active:scale-90 hover:text-white/80"
+  >
     <FiShoppingCart className="text-2xl" />
-    <span className="text-[10px] mt-1">Cart</span>
-  </div>
+  </Link>
 
-  <div className="flex flex-col items-center justify-center cursor-pointer transition-all duration-200 active:scale-90 hover:text-white/80">
+  <Link
+    to="/riwayat"
+    className="flex items-center justify-center transition-all duration-200 active:scale-90 hover:text-white/80"
+  >
     <FiClock className="text-2xl" />
-    <span className="text-[10px] mt-1">History</span>
-  </div>
+  </Link>
 
 </div>
 
