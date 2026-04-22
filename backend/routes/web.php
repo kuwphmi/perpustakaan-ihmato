@@ -23,8 +23,8 @@ Route::get('/search', [HomeController::class, 'search']);
 Route::get('/book/{title}', [HomeController::class, 'detail']);
 Route::get('/riwayat', [HomeController::class, 'riwayat']);
 Route::get('/genre/{name}', [HomeController::class, 'genre']);
+Route::get('/checkout', [HomeController::class, 'checkout']);
 
-/* WISHLIST*/
 Route::get('/wishlist', function () {
     $wishlist = session()->get('wishlist', []);
     return view('wishlist', compact('wishlist'));
@@ -51,3 +51,4 @@ Route::get('/notif', function () {
     $notif = session()->get('notif', []);
     return view('notif', compact('notif'));
 });
+
