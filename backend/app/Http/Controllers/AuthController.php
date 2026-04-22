@@ -3,32 +3,66 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-   public function login(Request $request)
-{
-    if ($request->email == 'admin@gmail.com' && $request->password == '123') {
+    // LOGIN
+    public function login(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
 
-        session([
-            'user' => [
-                'nama' => $request->nama,
-                'tgl_lahir' => $request->tgl_lahir,
-                'jk' => $request->jk,
-                'no_hp' => $request->no_hp,
-                'email' => $request->email
-            ]
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Email tidak ditemukan'
+            ], 404);
+        }
+
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Password salah'
+            ], 401);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Login berhasil',
+            'user' => $user
         ]);
-
-        return redirect('/profile');
     }
 
-    return back()->with('error', 'Email atau password salah');
-}
+    // REGISTER
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6'
+        ]);
 
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Akun berhasil dibuat',
+            'user' => $user
+        ]);
+    }
+
+    // LOGOUT
     public function logout()
     {
-        session()->forget('user');
-        return redirect('/login');
+        return response()->json([
+            'status' => true,
+            'message' => 'Logout berhasil'
+        ]);
     }
 }

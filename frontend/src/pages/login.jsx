@@ -1,4 +1,6 @@
 import { useState } from "react";
+import axios from "axios"; 
+import { useNavigate } from "react-router-dom";
 
 // ─── Password Strength Helper ──────────────────────────────────────────────
 function getStrength(password) {
@@ -79,18 +81,38 @@ function SidePanel({ title, description, dotIndex, bgColor }) {
   );
 }
 
-// ─── Login Form ───────────────────────────────────────────────────────────
-import { useNavigate } from "react-router-dom"; // ← tambah di paling atas file
+// ─── Login Form ───────────────────────────────────────────────────────────//
 
 function LoginForm({ onSwitch }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); // ← tambah ini
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    navigate("/beranda"); // ← ganti alert dengan ini
-  };
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await axios.post("http://localhost:8000/api/login", {
+      email,
+      password,
+    });
+
+    if (res.data.status) {
+      // simpan user login
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      // pindah ke beranda
+      navigate("/beranda");
+    } else {
+      alert(res.data.message || "Login gagal");
+    }
+
+  } catch (error) {
+    console.log(error);
+    alert("Server error atau backend belum jalan");
+  }
+};
 
   return (
     <div className="flex flex-1 flex-col justify-center px-8 md:px-12 py-10 max-w-md w-full mx-auto">
@@ -149,11 +171,27 @@ function RegisterForm({ onSwitch }) {
 
   const set = (key) => (e) => setForm((prev) => ({ ...prev, [key]: e.target.type === "checkbox" ? e.target.checked : e.target.value }));
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!form.agree) return alert("Harap setujui syarat & ketentuan.");
-    alert("Akun berhasil dibuat! (demo)");
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!form.agree) return alert("Harap setujui syarat & ketentuan.");
+
+  try {
+    const res = await axios.post("http://localhost:8000/api/register", {
+      name: form.firstName + " " + form.lastName,
+      email: form.email,
+      password: form.password,
+      phone: form.phone,
+    });
+
+    alert("Akun berhasil dibuat!");
+    onSwitch(); // pindah ke login
+
+  } catch (error) {
+    console.log(error);
+    alert("Register gagal atau backend error");
+  }
+};
 
   return (
     <div className="flex flex-1 flex-col justify-center px-8 md:px-12 py-10 max-w-md w-full mx-auto overflow-y-auto">

@@ -13,20 +13,22 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * Table yang dipakai (Supabase)
+     */
+    protected $table = 'users';
+
+    /**
+     * Field yang boleh diisi (WAJIB SESUAI DATABASE)
      */
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
+     * Field yang disembunyikan saat JSON response
      */
     protected $hidden = [
         'password',
@@ -34,9 +36,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * Cast tipe data otomatis
      */
     protected $casts = [
         'email_verified_at' => 'datetime',

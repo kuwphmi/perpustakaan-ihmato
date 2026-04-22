@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BukuJualController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KeranjangController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
