@@ -1,4 +1,5 @@
 import { useState } from "react";
+import logo from "../assets/logo.png";
 
 // ─── Password Strength Helper ──────────────────────────────────────────────
 function getStrength(password) {
@@ -29,11 +30,7 @@ function GoogleIcon() {
 function Logo() {
   return (
     <div className="flex items-center gap-2.5">
-      <div className="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center">
-        <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </div>
+      <img src={logo} alt="logo" className="w-9 h-9 object-contain" />
       <span className="text-white font-semibold text-base tracking-tight">BukuIn</span>
     </div>
   );
