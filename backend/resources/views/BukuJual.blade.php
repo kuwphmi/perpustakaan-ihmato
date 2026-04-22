@@ -10,54 +10,88 @@
 
     <h2 class="mb-4">🛒 Belanja Buku</h2>
 
-    <!-- 🔍 SEARCH (opsional, nanti bisa dikembangkan) -->
-    <form method="GET" action="/belanja" class="mb-4">
-        <input type="text" name="q" class="form-control" placeholder="Cari buku...">
-    </form>
+    @foreach($booksByGenre as $genre => $books)
 
-    <div class="row">
+        <!-- 🏷 GENRE -->
+        <h4 class="mt-5 mb-3">📚 {{ $genre }}</h4>
 
-        @foreach($books as $b)
-        <div class="col-md-3 mb-4">
+        <div class="row">
+            @foreach($books as $b)
+            <div class="col-md-3 mb-4">
 
-            <div class="card h-100 shadow-sm">
+                <div class="card h-100 shadow-sm">
 
-                <!-- 🖼 COVER -->
-                <img src="{{ $b['cover'] }}"
-                     class="card-img-top"
-                     style="height:250px; object-fit:cover;">
+                    <img src="{{ $b['cover'] }}"
+                         class="card-img-top"
+                         style="height:250px; object-fit:cover;">
 
-                <div class="card-body">
+                    <div class="card-body">
 
-                    <!-- 📚 TITLE -->
-                    <h6 class="fw-bold">{{ $b['title'] }}</h6>
+                        <h6 class="fw-bold">{{ $b['title'] }}</h6>
+                        <small class="text-muted">{{ $b['author'] }}</small>
 
-                    <!-- ✍️ AUTHOR -->
-                    <small class="text-muted">{{ $b['author'] }}</small>
+                        <hr>
 
-                    <hr>
+                        <p>💰 Rp {{ number_format($b['price'], 0, ',', '.') }}</p>
+                        <p>📦 Stok: {{ $b['stock'] }}</p>
 
-                    <!-- 💰 PRICE -->
-                    <p class="mb-1">💰 Rp {{ number_format($b['price'], 0, ',', '.') }}</p>
+                        <div class="d-flex gap-2">
 
-                    <!-- 📦 STOCK -->
-                    <p class="mb-2">📦 Stok: {{ $b['stock'] }}</p>
+                            <!-- Keranjang -->
+                            <button class="btn btn-success btn-sm w-50"
+                                onclick="tambahKeranjang(
+                                    '{{ $b['title'] }}',
+                                    '{{ $b['cover'] }}',
+                                    {{ $b['price'] }}
+                                )">
+                                Keranjang
+                            </button>
 
-                    <!-- 🛒 BUTTON -->
-                    <button class="btn btn-primary btn-sm w-100">
-                        Beli
-                    </button>
+                            <!-- Beli -->
+                            <button class="btn btn-primary btn-sm w-50">
+                                Beli
+                            </button>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
             </div>
-
+            @endforeach
         </div>
-        @endforeach
 
-    </div>
+    @endforeach
 
 </div>
+
+<!-- JS -->
+<script>
+function tambahKeranjang(judul, gambar, harga) {
+    fetch('http://localhost:8000/api/keranjang/tambah', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id_pengguna: 1,
+            id_buku: judul,
+            judul: judul,
+            gambar: gambar,
+            harga: harga
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Gagal menambahkan ke keranjang');
+    });
+}
+</script>
 
 </body>
 </html>

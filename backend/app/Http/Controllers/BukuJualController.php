@@ -10,40 +10,51 @@ class BukuJualController extends Controller
 {
     public function index(Request $request)
     {
-        // 📚 1. Ambil data dari Open Library
-        $response = Http::get("https://openlibrary.org/search.json", [
-            'q' => $request->q ?? 'harry potter'
-        ]);
+        // 📚 daftar genre
+        $genres = [
+            'fantasy',
+            'romance',
+            'science_fiction',
+            'mystery',
+            'horror',
+            'history'
+        ];
 
-        $data = $response->json();
-
-        // 🛒 2. Ambil data tambahan dari Supabase
+        // 🛒 ambil data dari database
         $hargaData = DB::table('buku_jual')->get();
 
-        $books = [];
+        $booksByGenre = [];
 
-        foreach ($data['docs'] ?? [] as $item) {
+        foreach ($genres as $g) {
 
-            // cocokkan data berdasarkan title
-            $extra = collect($hargaData)
-                ->firstWhere('title', $item['title']);
+            try {
+                $response = Http::timeout(5)
+                    ->get("https://openlibrary.org/subjects/{$g}.json?limit=8");
 
-            $books[] = [
-                'title' => $item['title'] ?? '-',
-                'author' => $item['author_name'][0] ?? '-',
-                'year' => $item['first_publish_year'] ?? '-',
+                $data = $response->json();
 
-                // 🖼 COVER GAMBAR
-                'cover' => isset($item['cover_i'])
-                    ? "https://covers.openlibrary.org/b/id/{$item['cover_i']}-L.jpg"
-                    : "https://via.placeholder.com/150",
+            } catch (\Exception $e) {
+                continue;
+            }
 
-                // 🛒 DATA DARI SUPABASE
-                'price' => $extra->price ?? 0,
-                'stock' => $extra->stock ?? 0,
-            ];
+            foreach ($data['works'] ?? [] as $item) {
+
+                // ambil data tambahan dari DB
+                $extra = collect($hargaData)
+                    ->firstWhere('title', $item['title']);
+
+                $booksByGenre[ucwords(str_replace('_',' ', $g))][] = [
+                    'title' => $item['title'] ?? '-',
+                    'author' => $item['authors'][0]['name'] ?? '-',
+                    'cover' => isset($item['cover_id'])
+                        ? "https://covers.openlibrary.org/b/id/{$item['cover_id']}-L.jpg"
+                        : "https://via.placeholder.com/150",
+                    'price' => $extra->price ?? 50000,
+                    'stock' => $extra->stock ?? 10,
+                ];
+            }
         }
 
-        return view('BukuJual', compact('books'));
+        return view('BukuJual', compact('booksByGenre'));
     }
 }
