@@ -6,6 +6,45 @@
 </head>
 <body>
 
+<!-- 🔵 NAVBAR (TAMBAHAN BARU - TIDAK MENGHAPUS YANG ADA) -->
+<nav class="navbar navbar-light bg-white shadow-sm px-4 py-3 mb-4">
+    <div class="container-fluid">
+
+        <span class="navbar-brand fw-bold text-primary">
+            📚 BukuIn Store
+        </span>
+
+        <div class="d-flex gap-3 align-items-center">
+
+            <!-- STATUS -->
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                    Status
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Diproses</a></li>
+                    <li><a class="dropdown-item" href="#">Dikirim</a></li>
+                    <li><a class="dropdown-item" href="#">Selesai</a></li>
+                </ul>
+            </div>
+
+            <!-- 🛒 KERANJANG ATAS (HANYA LIHAT ISI) -->
+            <a href="/keranjang" class="btn btn-success btn-sm">
+                🛒 Keranjang
+                <span id="cartCount" class="badge bg-danger">0</span>
+            </a>
+
+            <!-- PROFIL -->
+            <a href="/profile" class="btn btn-primary btn-sm">
+                👤 Profil
+            </a>
+
+        </div>
+
+    </div>
+</nav>
+
+
 <div class="container mt-4">
 
     <h2 class="mb-4">🛒 Belanja Buku</h2>
@@ -37,7 +76,7 @@
 
                         <div class="d-flex gap-2">
 
-                            <!-- Keranjang -->
+                            <!-- 🛒 TOMBOL KERANJANG (TAMBAH KE BACKEND) -->
                             <button class="btn btn-success btn-sm w-50"
                                 onclick="tambahKeranjang(
                                     '{{ $b['title'] }}',
@@ -76,7 +115,6 @@ function tambahKeranjang(judul, gambar, harga) {
         },
         body: JSON.stringify({
             id_pengguna: 1,
-            id_buku: judul,
             judul: judul,
             gambar: gambar,
             harga: harga
@@ -84,14 +122,30 @@ function tambahKeranjang(judul, gambar, harga) {
     })
     .then(res => res.json())
     .then(data => {
-        alert(data.message);
+        alert("Masuk keranjang!");
+        loadKeranjang(); // update badge
     })
     .catch(err => {
         console.error(err);
         alert('Gagal menambahkan ke keranjang');
     });
 }
+
+// 🔵 AMBIL JUMLAH KERANJANG UNTUK BADGE ATAS
+function loadKeranjang() {
+    fetch('http://localhost:8000/api/keranjang')
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("cartCount").innerText = data.data.length;
+    })
+    .catch(err => console.log(err));
+}
+
+loadKeranjang();
+
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
