@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import logo from "../assets/logo.png";
 
 // ─── Password Strength Helper ──────────────────────────────────────────────
@@ -77,8 +78,6 @@ function SidePanel({ title, description, dotIndex, bgColor }) {
 }
 
 // ─── Login Form ───────────────────────────────────────────────────────────
-import { useNavigate } from "react-router-dom"; // ← tambah di paling atas file
-
 function LoginForm({ onSwitch }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -86,7 +85,7 @@ function LoginForm({ onSwitch }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/beranda"); // ← ganti alert dengan ini
+    navigate("/halamanutama"); // ← ganti alert dengan ini
   };
 
   return (

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Beranda from "./pages/beranda";
 import Login from "./pages/login";
+import HalamanUtama from "./pages/halamanutama";
 
 function App() {
   return (
@@ -8,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Beranda />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/beranda" element={<Beranda />} />
+        <Route path="/halamanutama" element={<HalamanUtama />} />
       </Routes>
     </BrowserRouter>
   );
