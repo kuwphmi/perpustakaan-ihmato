@@ -59,7 +59,7 @@ export default function HalamanUtama() {
             <Link
               key={i}
               to={item.path}
-              className="relative cursor-pointer transition-all duration-300 hover:text-blue-200 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+              className="relative cursor-pointer transition-all duration-300 hover:text-blue-200 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0after:h-0.5] after:bg-white after:transition-all after:duration-300 hover:after:w-full"
             >
               {item.name}
             </Link>
@@ -73,7 +73,7 @@ export default function HalamanUtama() {
         <div className="max-w-6xl mx-auto flex items-center px-6 py-3">
 
           {/* LOGO */}
-          <div className="flex-shrink-0 mr-4">
+          <div className="shrink-0 mr-4">
             <img src={logo} alt="logo" className="w-8 h-8" />
           </div>
 
@@ -90,7 +90,7 @@ export default function HalamanUtama() {
           </div>
 
           {/* ICON */}
-          <div className="flex items-center gap-3 flex-shrink-0 ml-4">
+          <div className="flex items-center gap-3 shrink-0 ml-4">
             <FiHeart className="text-xl text-gray-600 cursor-pointer hover:text-red-500 transition" />
             <FiBell className="text-xl text-gray-600 cursor-pointer hover:text-yellow-500 transition" />
 
