@@ -47,25 +47,25 @@ export default function HalamanUtama() {
   return (
     <div className="bg-white min-h-screen">
 
-      {/* HEADER BIRU (DESKTOP ONLY) */}
       <div className="hidden md:flex bg-blue-600 text-white px-10 py-3 items-center justify-end text-sm font-medium">
-        <div className="flex gap-8">
-          {[
-            { name: "Beranda", path: "/halamanutama" },
-            { name: "Koleksi", path: "/koleksi" },
-            { name: "Belanja", path: "/belanja" },
-            { name: "Riwayat", path: "/riwayat" },
-          ].map((item, i) => (
-            <Link
-              key={i}
-              to={item.path}
-              className="relative cursor-pointer transition-all duration-300 hover:text-blue-200 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0after:h-0.5] after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-            >
-              {item.name}
-            </Link>
-          ))}
-        </div>
-      </div>
+  <div className="flex gap-6">
+    {[
+      { name: "Beranda", path: "/halamanutama" },
+      { name: "Koleksi", path: "/koleksi" },
+      { name: "Belanja", path: "/belanja" },
+      { name: "Riwayat", path: "/riwayat" },
+    ].map((item, i) => (
+      <Link
+        key={i}
+        to={item.path}
+        className="px-3 py-1 rounded-md transition-all duration-200 
+        hover:text-blue-200 hover:bg-white/10"
+      >
+        {item.name}
+      </Link>
+    ))}
+  </div>
+</div>
 
       {/* NAVBAR */}
       <div className="bg-white shadow sticky top-0 z-50">

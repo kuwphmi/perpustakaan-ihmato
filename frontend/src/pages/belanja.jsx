@@ -1,26 +1,49 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
+// IMPORT ASSETS
+import banner1 from "../assets/banner1.png";
+import banner2 from "../assets/banner2.png";
+import banner3 from "../assets/banner3.png";
+import logo from "../assets/logo.png";
+
+// ICONS
+import {
+  FiBook,
+  FiUser,
+  FiBriefcase,
+  FiFeather,
+  FiHeart,
+  FiTrendingUp,
+  FiGlobe,
+  FiTool,
+  FiSmile,
+  FiFileText,
+  FiMenu,
+  FiX,
+  FiBell, // ✅ TAMBAHAN
+} from "react-icons/fi";
 
 export default function Belanja() {
   const [cart, setCart] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [bookSlide, setBookSlide] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeMenu, setActiveMenu] = useState("Beranda");
+  const [isOpen, setIsOpen] = useState(false);
 
-  const banners = [
-    "/banner1.png",
-    "/banner2.png",
-    "/banner3.png",
-  ];
+  const banners = [banner1, banner2, banner3];
 
-  const products = [
-    { id: 1, name: "E-Book Pemrograman", price: 50000 },
-    { id: 2, name: "E-Book Desain UI/UX", price: 75000 },
-    { id: 3, name: "E-Book Data Science", price: 90000 },
-  ];
-
-  const addToCart = (product) => {
-    setCart([...cart, product]);
+  const dummyProduct = {
+    id: 1,
+    name: "E-Book Digital",
+    price: 50000,
   };
 
-  // Auto slide
+  const addToCart = (product) => {
+    setCart((prev) => [...prev, product]);
+  };
+
+  // SLIDER BANNER
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) =>
@@ -31,97 +54,287 @@ export default function Belanja() {
     return () => clearInterval(interval);
   }, []);
 
+  // SLIDER BUKU
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBookSlide((prev) => (prev + 1) % 3);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // SCROLL NAVBAR
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const categories = [
+    { name: "Bahasa & Sastra", icon: <FiFeather /> },
+    { name: "Biografi", icon: <FiUser /> },
+    { name: "Bisnis", icon: <FiBriefcase /> },
+    { name: "Fiksi", icon: <FiBook /> },
+    { name: "Kesehatan", icon: <FiHeart /> },
+    { name: "Motivasi", icon: <FiTrendingUp /> },
+    { name: "Ilmu Sosial", icon: <FiGlobe /> },
+    { name: "Keterampilan", icon: <FiTool /> },
+    { name: "Anak", icon: <FiSmile /> },
+    { name: "Soal", icon: <FiFileText /> },
+  ];
+
   return (
     <div className="font-sans">
 
-      {/* Navbar */}
-      <header className="absolute top-0 left-0 w-full flex justify-between items-center px-10 py-5 text-white z-20">
+      {/* ================= NAVBAR ================= */}
+      <header
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 flex justify-between items-center px-6 md:px-10 py-4 ${
+          scrolled
+            ? "bg-white shadow-md border-b border-gray-100"
+            : "bg-transparent"
+        }`}
+      >
+        {/* LOGO */}
         <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="logo" className="w-10" />
+          <img src={logo} alt="logo" className="w-10 h-10" />
+          <span className={`font-bold ${scrolled ? "text-blue-700" : "text-white"}`}>
+            BukuIn
+          </span>
         </div>
 
-        <nav className="space-x-6 hidden md:flex">
-          <a href="#">Beranda</a>
-          <a href="#">Semua Produk</a>
-          <a href="#">Berita</a>
-          <a href="#">Cara Belanja</a>
-          <a href="#">Tentang</a>
+        {/* MENU */}
+        <nav className="hidden md:flex space-x-4 text-sm">
+          {["Beranda", "Semua Produk", "Belanja"].map((menu) => (
+            <a
+              key={menu}
+              href="#"
+              onClick={() => setActiveMenu(menu)}
+              className={`px-3 py-2 rounded-md transition duration-200
+                ${
+                  scrolled
+                    ? "text-gray-700 hover:text-blue-600 hover:bg-white/30 backdrop-blur-sm"
+                    : "text-white/90 hover:text-white hover:bg-white/10 backdrop-blur-sm"
+                }
+              `}
+            >
+              {menu}
+            </a>
+          ))}
         </nav>
 
-        <div className="text-xl">
-          🛒 <span>{cart.length}</span>
+        {/* RIGHT SIDE */}
+        <div className="flex items-center gap-4">
+
+          {/* 🔔 NOTIF */}
+          <FiBell
+            className={`text-xl cursor-pointer ${
+              scrolled ? "text-gray-700" : "text-white"
+            }`}
+          />
+
+          {/* 👤 PROFILE */}
+          <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-semibold cursor-pointer">
+            R
+          </div>
+
+          {/* CART */}
+          <div
+            className={`text-xl cursor-pointer transition ${
+              scrolled
+                ? "text-gray-700 hover:text-blue-600"
+                : "text-white hover:text-blue-200"
+            }`}
+            onClick={() => addToCart(dummyProduct)}
+          >
+            🛒 <span>{cart.length}</span>
+          </div>
+
+          {/* HAMBURGER */}
+          <button
+            className="md:hidden text-2xl"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? (
+              <FiX className={scrolled ? "text-black" : "text-white"} />
+            ) : (
+              <FiMenu className={scrolled ? "text-black" : "text-white"} />
+            )}
+          </button>
         </div>
       </header>
 
-      {/* Slider Banner */}
+      {/* ================= MOBILE SIDEBAR ================= */}
+      <div
+        className={`fixed inset-0 z-50 md:hidden transition-all duration-300 ${
+          isOpen ? "visible opacity-100" : "invisible opacity-0"
+        }`}
+      >
+        <div
+          className="absolute inset-0 bg-black/40"
+          onClick={() => setIsOpen(false)}
+        />
+
+        <div
+          className={`absolute top-0 left-0 h-full w-[260px] bg-white shadow-2xl transform transition-transform duration-300 ${
+            isOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div className="flex justify-between items-center p-4 border-b">
+            <span className="font-bold text-blue-700">Menu</span>
+            <button onClick={() => setIsOpen(false)}>
+              <FiX size={22} />
+            </button>
+          </div>
+
+          <div className="flex flex-col p-4 space-y-3">
+            {["Beranda", "Semua Produk", "Belanja"].map((menu) => (
+              <a
+                key={menu}
+                href="#"
+                onClick={() => {
+                  setActiveMenu(menu);
+                  setIsOpen(false);
+                }}
+                className="px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-100"
+              >
+                {menu}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ================= BANNER ================= */}
       <section className="relative h-[90vh] w-full overflow-hidden">
         {banners.map((img, index) => (
           <img
             key={index}
             src={img}
-            alt={`banner-${index}`}
+            alt=""
             className={`absolute w-full h-full object-cover transition-opacity duration-700 ${
               currentSlide === index ? "opacity-100" : "opacity-0"
             }`}
           />
         ))}
+      </section>
 
-        {/* Overlay Text */}
-        <div className="absolute inset-0 bg-black/40 flex flex-col justify-center px-10 text-white">
-          <h1 className="text-5xl font-bold mb-4">
-            PERPUSTAKAAN DIGITAL
-          </h1>
-          <p className="text-xl italic mb-6">
-            Dunia Dalam Genggaman
-          </p>
-          <button className="bg-orange-500 px-6 py-3 rounded-full w-fit hover:bg-orange-600">
-            Belanja Sekarang
-          </button>
-        </div>
-
-        {/* Indicator */}
-        <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-2">
-          {banners.map((_, i) => (
-            <div
-              key={i}
-              onClick={() => setCurrentSlide(i)}
-              className={`w-3 h-3 rounded-full cursor-pointer ${
-                currentSlide === i ? "bg-white" : "bg-gray-400"
-              }`}
+      {/* ================= SEARCH ================= */}
+      <section className="relative z-20 -mt-20 px-6 md:px-20">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-white rounded-xl shadow-xl p-4 flex items-center">
+            <input
+              type="text"
+              placeholder="Cari judul buku..."
+              className="flex-1 px-5 py-3 text-sm focus:outline-none"
             />
-          ))}
+            <button className="bg-blue-600 text-white px-6 py-3 rounded-lg">
+              Cari
+            </button>
+          </div>
         </div>
       </section>
 
-      {/* Produk */}
-      <section className="py-16 px-10 bg-gray-100">
-        <h2 className="text-3xl font-bold mb-10 text-center">
-          Produk Kami
-        </h2>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {products.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition"
-            >
-              <h3 className="text-xl font-semibold mb-2">
-                {item.name}
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Rp {item.price.toLocaleString()}
-              </p>
-              <button
-                onClick={() => addToCart(item)}
-                className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600"
-              >
-                Tambah ke Keranjang
-              </button>
+      {/* ================= KATEGORI ================= */}
+      <section className="bg-blue-50 py-12 px-6 md:px-20">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
+          {categories.map((item, i) => (
+            <div key={i} className="bg-white p-5 rounded-xl shadow">
+              <div className="text-3xl mb-3 text-blue-600 flex justify-center">
+                {item.icon}
+              </div>
+              <p className="text-sm">{item.name}</p>
             </div>
           ))}
         </div>
       </section>
 
+       {/* ================= BUKU TERLARIS ================= */}
+      <section className="bg-white py-14 px-6 md:px-20 overflow-hidden">
+        <h2 className="text-3xl font-bold text-blue-700 text-center mb-10 w-full">
+          Buku Terlaris
+        </h2>
+
+        <div className="flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+            <div key={item} className="min-w-[250px] snap-start">
+              <BookCard item={item} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ================= LANDSCAPE ================= */}
+      <section className="px-6 md:px-20 pb-14">
+        <div className="max-w-6xl mx-auto relative overflow-hidden rounded-xl shadow-2xl">
+          <img src={banner1} className="w-full h-80 md:h-[28rem] object-cover" />
+        </div>
+      </section>
+
+      <BukuTerbaru />
     </div>
+  );
+}
+
+/* ================= BOOK CARD ================= */
+function BookCard({ item }) {
+  return (
+    <div className="bg-white border rounded-xl shadow hover:shadow-lg transition overflow-hidden">
+      <div className="h-48 bg-blue-100 flex items-center justify-center">
+        Cover Buku {item}
+      </div>
+      <div className="p-4">
+        <h3 className="text-sm font-semibold">Judul Buku {item}</h3>
+        <p className="text-blue-600 font-bold">Rp 50.000</p>
+      </div>
+    </div>
+  );
+}
+
+/* ================= BUKU TERBARU ================= */
+function BukuTerbaru() {
+  const scrollRef = useRef(null);
+
+  const scroll = (dir) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
+        left: dir === "left" ? -300 : 300,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  return (
+    <>
+      <section className="px-6 md:px-20 pb-14">
+        <h2 className="text-3xl font-bold text-blue-700 mb-10 text-center">
+          Buku Terbaru
+        </h2>
+
+        {/* ✅ YANG KAMU BILANG KEHAPUS → SUDAH BALIK */}
+        <div className="flex justify-end gap-2 mb-3">
+          <button onClick={() => scroll("left")} className="px-3 py-1 bg-gray-200 rounded">←</button>
+          <button onClick={() => scroll("right")} className="px-3 py-1 bg-gray-200 rounded">→</button>
+        </div>
+
+        <div
+          ref={scrollRef}
+          className="flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory"
+        >
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+            <div key={item} className="min-w-[250px] snap-start">
+              <BookCard item={item} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ✅ FOOTER BALIK */}
+      <footer className="mt-16 bg-gray-900 text-white text-center py-6">
+        <p className="text-sm">© 2026 BukuIn. All rights reserved.</p>
+      </footer>
+    </>
   );
 }
