@@ -3,7 +3,8 @@ import Beranda from "./pages/beranda";
 import Login from "./pages/login";
 import HalamanUtama from "./pages/halamanutama";
 import Koleksi from "./pages/koleksi";
-import Belanja from "./pages/belanja"; 
+import Belanja from "./pages/belanja";
+import AdminPerpustakaan from "./pages/admin";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/halamanutama" element={<HalamanUtama />} />
         <Route path="/koleksi" element={<Koleksi />} />
         <Route path="/belanja" element={<Belanja />} /> {/* ⬅️ route baru */}
+        <Route path="/admin" element={<AdminPerpustakaan />} />
       </Routes>
     </BrowserRouter>
   );
