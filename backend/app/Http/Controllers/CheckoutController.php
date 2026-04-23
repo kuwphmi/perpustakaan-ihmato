@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class CheckoutController extends Controller
 {
     public function index(Request $request)
     {
-        // SET MIDTRANS CONFIG
-        \Midtrans\Config::$serverKey = config('midtrans.server_key');
-        \Midtrans\Config::$isProduction = config('midtrans.is_production');
-        \Midtrans\Config::$isSanitized = true;
-        \Midtrans\Config::$is3ds = true;
+        // SET MIDTRANS CONFIG (PAKAI IMPORT, BUKAN \Midtrans\)
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
 
         // ORDER ID unik
         $orderId = 'ORDER-' . time();
@@ -21,7 +23,7 @@ class CheckoutController extends Controller
         $params = [
             'transaction_details' => [
                 'order_id' => $orderId,
-                'gross_amount' => $request->amount ?? 10000,
+                'gross_amount' => (int) ($request->amount ?? 10000),
             ],
             'customer_details' => [
                 'first_name' => $request->name ?? 'User',
@@ -30,8 +32,7 @@ class CheckoutController extends Controller
         ];
 
         try {
-            // CREATE SNAP TOKEN
-            $snapToken = \Midtrans\Snap::getSnapToken($params);
+            $snapToken = Snap::getSnapToken($params);
 
             return response()->json([
                 'status' => true,
