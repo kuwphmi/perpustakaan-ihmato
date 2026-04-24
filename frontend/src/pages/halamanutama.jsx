@@ -177,49 +177,68 @@ export default function HalamanUtama() {
       </div>
 
       {/* SECTION POPULER */}
-      <div className="px-6 md:px-10 mt-10">
-        <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6">
-          E-Book Terpopuler
-        </h2>
+      <section className="bg-white py-14 px-6 md:px-20 overflow-hidden">
+  <h2 className="text-3xl font-bold text-blue-700 text-center mb-10">
+    Buku Terpopuler
+  </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {[1,2,3,4,5,6,7,8].map((item) => (
-            <div
-              key={item}
-              className="bg-white shadow rounded-xl p-3 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="w-full h-32 md:h-40 bg-gray-200 rounded-lg mb-3"></div>
-              <h3 className="text-sm font-semibold text-gray-700">
-                Judul Buku {item}
-              </h3>
-              <p className="text-xs text-gray-500">Penulis</p>
-            </div>
-          ))}
+  <div className="flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4">
+    {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+      <div
+        key={item}
+        className="min-w-[250px] snap-start bg-white border rounded-xl shadow hover:shadow-lg transition overflow-hidden"
+      >
+        <div className="h-48 bg-blue-100 flex items-center justify-center">
+          Cover Buku {item}
+        </div>
+
+        <div className="p-4">
+          <h3 className="text-sm font-semibold">
+            Judul Buku {item}
+          </h3>
+          <p className="text-blue-600 font-bold">Penulis</p>
         </div>
       </div>
+    ))}
+  </div>
+</section>
 
-      {/* SECTION REKOMENDASI */}
-      <div className="px-6 md:px-10 mt-14">
-        <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6">
-          Rekomendasi Untukmu
-        </h2>
+ {/* Lanscape */}
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {[1,2,3,4].map((item) => (
-            <div
-              key={item}
-              className="bg-blue-50 p-4 rounded-xl hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-            >
-              <h3 className="font-semibold text-blue-700 mb-2">
-                Buku Pilihan {item}
-              </h3>
-              <p className="text-sm text-gray-600">
-                Deskripsi singkat buku rekomendasi.
-              </p>
-            </div>
-          ))}
+<section className="px-6 md:px-20 pb-14">
+  <div className="max-w-6xl mx-auto relative overflow-hidden rounded-xl shadow-2xl">
+    <img
+      src={banner1}
+      className="w-full h-80 md:h-[28rem] object-cover"
+    />
+  </div>
+</section>
+
+      <section className="bg-white py-14 px-6 md:px-20 overflow-hidden">
+  <h2 className="text-3xl font-bold text-blue-700 text-center mb-10">
+    Buku Terpopuler
+  </h2>
+
+  <div className="flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4">
+    {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+      <div
+        key={item}
+        className="min-w-[250px] snap-start bg-white border rounded-xl shadow hover:shadow-lg transition overflow-hidden"
+      >
+        <div className="h-48 bg-blue-100 flex items-center justify-center">
+          Cover Buku {item}
+        </div>
+
+        <div className="p-4">
+          <h3 className="text-sm font-semibold">
+            Judul Buku {item}
+          </h3>
+          <p className="text-blue-600 font-bold">Penulis</p>
         </div>
       </div>
+    ))}
+  </div>
+</section>
 
       {/* FOOTER */}
       <div className="mt-16 bg-gray-900 text-white text-center py-6">

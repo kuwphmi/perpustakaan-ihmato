@@ -8,29 +8,48 @@ import {
   FiBook,
   FiShoppingCart,
   FiClock,
+  FiFeather,
+  FiUser,
+  FiBriefcase,
+  FiTrendingUp,
+  FiGlobe,
+  FiTool,
+  FiSmile,
+  FiFileText,
 } from "react-icons/fi";
 
 import logo from "../assets/logo.png";
 
 export default function Koleksi() {
   const [search, setSearch] = useState("");
-  const [openFilter, setOpenFilter] = useState(null);
-
-  // 🔥 tambahan untuk mobile filter
-  const [showFilter, setShowFilter] = useState(false);
 
   const books = [
-    { id: 1, title: "Algoritma Dasar", author: "Budi" },
-    { id: 2, title: "React untuk Pemula", author: "Andi" },
-    { id: 3, title: "UI UX Design", author: "Sinta" },
-    { id: 4, title: "Database MySQL", author: "Rizky" },
-    { id: 5, title: "Pemrograman Web", author: "Dewi" },
-    { id: 6, title: "Node JS Guide", author: "Farhan" },
-  ];
+  { id: 1, title: "Algoritma Dasar", author: "Budi" },
+  { id: 2, title: "React untuk Pemula", author: "Andi" },
+  { id: 3, title: "UI UX Design", author: "Sinta" },
+  { id: 4, title: "Database MySQL", author: "Rizky" },
+  { id: 5, title: "Pemrograman Web", author: "Dewi" },
+  { id: 6, title: "Node JS Guide", author: "Farhan" },
+];
+
+  const categories = [
+  { name: "Art", icon: <FiFeather /> },
+  { name: "Science Fiction", icon: <FiUser /> },
+  { name: "Fantasy", icon: <FiBriefcase /> },
+  { name: "Biographies", icon: <FiBook /> },
+  { name: "Recipe", icon: <FiHeart /> },
+  { name: "Romance", icon: <FiTrendingUp /> },
+  { name: "Textbox", icon: <FiGlobe /> },
+  { name: "Children", icon: <FiTool /> },
+  { name: "Medicine", icon: <FiSmile /> },
+  { name: "Religion", icon: <FiFileText /> },
+];
 
   const filteredBooks = books.filter((b) =>
     b.title.toLowerCase().includes(search.toLowerCase())
   );
+
+  
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -85,67 +104,27 @@ export default function Koleksi() {
         </div>
       </div>
 
+      {/* ================= KATEGORI ================= */}
+      <section className="bg-blue-50 py-12 px-6 md:px-20">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
+          {categories.map((item, i) => (
+            <div key={i} className="bg-white p-5 rounded-xl shadow">
+              <div className="text-3xl mb-3 text-blue-600 flex justify-center">
+                {item.icon}
+              </div>
+              <p className="text-sm">{item.name}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* MAIN */}
       <div className="max-w-7xl mx-auto flex gap-6 px-6 mt-6">
-
-        {/* FILTER DESKTOP (TIDAK DIUBAH) */}
-        <div className="hidden md:block w-72">
-          <div className="bg-white rounded-2xl shadow-md p-5 sticky top-24">
-
-            <h2 className="font-bold text-lg mb-4">Filter Buku</h2>
-
-            {[
-              {
-                title: "Genre",
-                options: ["Teknologi", "UI/UX", "Database", "Web Dev"],
-              },
-              {
-                title: "Penerbit",
-                options: ["Gramedia", "Informatika", "Erlangga"],
-              },
-              {
-                title: "Rating",
-                options: ["⭐ 5", "⭐ 4 ke atas", "⭐ 3 ke atas"],
-              },
-            ].map((item, i) => (
-              <div key={i} className="mb-3 border rounded-xl overflow-hidden">
-
-                <button
-                  onClick={() => setOpenFilter(openFilter === i ? null : i)}
-                  className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition"
-                >
-                  <span className="font-medium text-sm">{item.title}</span>
-                </button>
-
-                {openFilter === i && (
-                  <div className="p-3 flex flex-col gap-2 text-sm text-gray-600">
-                    {item.options.map((opt, idx) => (
-                      <label key={idx} className="flex items-center gap-2">
-                        <input type="checkbox" className="accent-blue-600" />
-                        {opt}
-                      </label>
-                    ))}
-                  </div>
-                )}
-
-              </div>
-            ))}
-
-          </div>
-        </div>
 
         {/* CONTENT */}
         <div className="flex-1">
 
-          <h1 className="text-2xl font-bold mb-2">E-Book</h1>
-
-          {/* tombol filter mobile */}
-          <button
-            onClick={() => setShowFilter(true)}
-            className="md:hidden mb-3 px-4 py-2 bg-blue-600 text-white rounded-lg"
-          >
-            Filter
-          </button>
+          <h1 className="text-2xl font-bold mb-2"></h1>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
@@ -164,64 +143,6 @@ export default function Koleksi() {
 
         </div>
       </div>
-
-      {/* FILTER MOBILE OVERLAY */}
-      {showFilter && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex md:hidden">
-
-          <div className="w-80 bg-white h-full p-5 overflow-y-auto">
-
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="font-bold text-lg">Filter Buku</h2>
-
-              <button
-                onClick={() => setShowFilter(false)}
-                className="text-red-500 font-bold"
-              >
-                ✕
-              </button>
-            </div>
-
-            {[
-              {
-                title: "Genre",
-                options: ["Teknologi", "UI/UX", "Database", "Web Dev"],
-              },
-              {
-                title: "Penerbit",
-                options: ["Gramedia", "Informatika", "Erlangga"],
-              },
-              {
-                title: "Rating",
-                options: ["⭐ 5", "⭐ 4 ke atas", "⭐ 3 ke atas"],
-              },
-            ].map((item, i) => (
-              <div key={i} className="mb-3 border rounded-xl overflow-hidden">
-
-                <button
-                  onClick={() => setOpenFilter(openFilter === i ? null : i)}
-                  className="w-full flex items-center justify-between px-4 py-3 bg-gray-50"
-                >
-                  <span className="font-medium text-sm">{item.title}</span>
-                </button>
-
-                {openFilter === i && (
-                  <div className="p-3 flex flex-col gap-2 text-sm text-gray-600">
-                    {item.options.map((opt, idx) => (
-                      <label key={idx} className="flex items-center gap-2">
-                        <input type="checkbox" className="accent-blue-600" />
-                        {opt}
-                      </label>
-                    ))}
-                  </div>
-                )}
-
-              </div>
-            ))}
-
-          </div>
-        </div>
-      )}
 
       {/* MOBILE NAVBAR */}
       <div className="md:hidden fixed bottom-0 left-0 w-full bg-blue-600 text-white border-t border-blue-500 flex justify-around items-center py-3">

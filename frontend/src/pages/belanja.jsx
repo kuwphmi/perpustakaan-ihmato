@@ -30,6 +30,8 @@ export default function Belanja() {
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState("Beranda");
   const [isOpen, setIsOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
 
   const banners = [banner1, banner2, banner3];
 
@@ -73,17 +75,29 @@ export default function Belanja() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+  const handleClickOutside = () => {
+    setIsNotifOpen(false);
+  };
+
+  if (isNotifOpen) {
+    window.addEventListener("click", handleClickOutside);
+  }
+
+  return () => window.removeEventListener("click", handleClickOutside);
+}, [isNotifOpen]);
+
   const categories = [
-    { name: "Bahasa & Sastra", icon: <FiFeather /> },
-    { name: "Biografi", icon: <FiUser /> },
-    { name: "Bisnis", icon: <FiBriefcase /> },
-    { name: "Fiksi", icon: <FiBook /> },
-    { name: "Kesehatan", icon: <FiHeart /> },
-    { name: "Motivasi", icon: <FiTrendingUp /> },
-    { name: "Ilmu Sosial", icon: <FiGlobe /> },
-    { name: "Keterampilan", icon: <FiTool /> },
-    { name: "Anak", icon: <FiSmile /> },
-    { name: "Soal", icon: <FiFileText /> },
+    { name: "Art", icon: <FiFeather /> },
+    { name: "Sience fiction", icon: <FiUser /> },
+    { name: "Fantasy", icon: <FiBriefcase /> },
+    { name: "Biographies", icon: <FiBook /> },
+    { name: "Recipe", icon: <FiHeart /> },
+    { name: "Romance", icon: <FiTrendingUp /> },
+    { name: "Textbox", icon: <FiGlobe /> },
+    { name: "Childern", icon: <FiTool /> },
+    { name: "Medicine", icon: <FiSmile /> },
+    { name: "Religion", icon: <FiFileText /> },
   ];
 
   return (
@@ -129,11 +143,45 @@ export default function Belanja() {
         <div className="flex items-center gap-4">
 
           {/* 🔔 NOTIF */}
-          <FiBell
-            className={`text-xl cursor-pointer ${
-              scrolled ? "text-gray-700" : "text-white"
-            }`}
-          />
+          <div className="relative">
+  {/* ICON */}
+  <FiBell
+    className="text-xl text-gray-600 cursor-pointer hover:text-yellow-500 transition"
+    onClick={(e) => {
+      e.stopPropagation();
+      setIsNotifOpen(!isNotifOpen);
+    }}
+  />
+
+  {/* DROPDOWN */}
+  {isNotifOpen && (
+    <div className="absolute right-0 mt-3 w-72 bg-white rounded-xl shadow-xl border z-50">
+
+      {/* ARROW */}
+      <div className="absolute -top-2 right-4 w-4 h-4 bg-white rotate-45 border-l border-t"></div>
+
+      {/* CONTENT */}
+      <div className="py-3 text-center">
+
+        {/* TITLE */}
+        <h3 className="font-semibold text-gray-700 pb-2 border-b">
+          Pemberitahuanmu
+        </h3>
+
+        {/* ISI */}
+        <div className="py-6 text-sm text-gray-400 border-b">
+          Belum ada notifikasi baru
+        </div>
+
+        {/* FOOTER */}
+        <button className="pt-2 text-sm text-gray-600 hover:text-blue-600">
+          Lihat Semua
+        </button>
+
+      </div>
+    </div>
+  )}
+</div>
 
           {/* 👤 PROFILE */}
           <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-semibold cursor-pointer">
@@ -141,16 +189,56 @@ export default function Belanja() {
           </div>
 
           {/* CART */}
-          <div
-            className={`text-xl cursor-pointer transition ${
-              scrolled
-                ? "text-gray-700 hover:text-blue-600"
-                : "text-white hover:text-blue-200"
-            }`}
-            onClick={() => addToCart(dummyProduct)}
-          >
-            🛒 <span>{cart.length}</span>
+          <div className="relative">
+            
+  {/* ICON */}
+  <div
+    className={`text-xl cursor-pointer transition ${
+      scrolled
+        ? "text-gray-700 hover:text-blue-600"
+        : "text-white hover:text-blue-200"
+    }`}
+    onClick={(e) => {
+      e.stopPropagation();
+      setIsCartOpen(!isCartOpen);
+    }}
+  >
+    🛒 {cart.length > 0 && <span>{cart.length}</span>}
+  </div>
+
+  {/* DROPDOWN */}
+  {isCartOpen && (
+    <div className="absolute right-0 mt-3 w-72 bg-white rounded-xl shadow-xl border z-50">
+
+      {/* arrow kecil */}
+      <div className="absolute -top-2 right-4 w-4 h-4 bg-white rotate-45 border-l border-t"></div>
+
+      <div className="p-4">
+        {cart.length === 0 ? (
+          <div className="text-center py-6">
+            <div className="text-4xl mb-2">🛍️</div>
+            <p className="text-gray-500 text-sm">Belum ada produk</p>
           </div>
+        ) : (
+          <>
+            <h3 className="font-semibold mb-3">Keranjang</h3>
+
+            {cart.map((item, i) => (
+              <div key={i} className="flex justify-between text-sm mb-2">
+                <span>{item.name}</span>
+                <span>Rp {item.price}</span>
+              </div>
+            ))}
+
+            <button className="mt-3 w-full bg-blue-600 text-white py-2 rounded-lg text-sm">
+              Checkout
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  )}
+</div>
 
           {/* HAMBURGER */}
           <button
