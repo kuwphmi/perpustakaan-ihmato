@@ -162,9 +162,11 @@ export default function HalamanUtama() {
 
       {/* BUTTON PROFIL */}
       <div className="px-4 py-4">
-        <button className="w-full bg-blue-700 text-white py-2 rounded-lg font-semibold shadow hover:bg-blue-800 transition">
-          Profilku
-        </button>
+        <Link to="/profil">
+  <button className="w-full bg-blue-700 text-white py-2 rounded-lg font-semibold shadow hover:bg-blue-800 transition">
+    Profilku
+  </button>
+</Link>
       </div>
 
     </div>
@@ -211,25 +213,12 @@ export default function HalamanUtama() {
         </div>
 
         {/* MOBILE NAVBAR (TETAP) */}
-        <div className="md:hidden fixed bottom-0 left-0 w-full bg-blue-600 text-white border-t border-blue-500 flex justify-around items-center py-3 z-50">
-
-          <Link to="/halamanutama">
-            <FiHome className="text-2xl" />
-          </Link>
-
-          <Link to="/koleksi">
-            <FiBook className="text-2xl" />
-          </Link>
-
-          <Link to="/belanja">
-            <FiShoppingCart className="text-2xl" />
-          </Link>
-
-          <Link to="/riwayat">
-            <FiClock className="text-2xl" />
-          </Link>
-
-        </div>
+        <div className="md:hidden fixed bottom-0 left-0 w-full bg-blue-600 text-white flex justify-around py-3">
+        <Link to="/halamanutama"><FiHome className="text-2xl" /></Link>
+        <Link to="/koleksi"><FiBook className="text-2xl" /></Link>
+        <Link to="/belanja"><FiShoppingCart className="text-2xl" /></Link>
+        <Link to="/riwayat"><FiClock className="text-2xl" /></Link>
+      </div>
 
         {/* DOT */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">

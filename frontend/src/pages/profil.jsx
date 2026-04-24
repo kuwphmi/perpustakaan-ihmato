@@ -190,8 +190,7 @@ export default function Profil() {
 
           <div className="bg-white rounded-2xl shadow-md p-6">
 
-<div className="bg-white rounded-2xl shadow-md p-6">
-
+{/* Kartu */}
   <h3 className="font-semibold text-gray-700 mb-4">
     Kartu Anggota
   </h3>
@@ -199,13 +198,6 @@ export default function Profil() {
   <div className="relative rounded-2xl p-6 text-white overflow-hidden
                   bg-gradient-to-br from-blue-500 via-blue-600 to-blue-800
                   shadow-[0_10px_30px_rgba(0,0,0,0.25)]">
-
-    {/* LOGO */}
-    <img
-      src={logo}
-      alt="logo"
-      className="absolute top-4 right-4 w-10 opacity-90"
-    />
 
     {/* Glow effect */}
     <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
@@ -234,8 +226,6 @@ export default function Profil() {
     </div>
 
   </div>
-
-</div>
 
 </div>
 

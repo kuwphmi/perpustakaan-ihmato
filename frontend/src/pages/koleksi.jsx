@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   FiSearch,
@@ -9,47 +9,38 @@ import {
   FiUser,
   FiShoppingCart,
   FiClock,
+  FiFeather,
+  FiBriefcase,
+  FiTrendingUp,
+  FiGlobe,
+  FiTool,
+  FiSmile,
+  FiFileText,
 } from "react-icons/fi";
 
-import banner1 from "../assets/banner1.png";
-import banner2 from "../assets/banner2.png";
-import banner3 from "../assets/banner3.png";
 import logo from "../assets/logo.png";
 
 export default function HalamanUtama() {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  const slides = [
-    {
-      img: banner1,
-      title: "Sistem Perpustakaan Modern",
-      subtitle: "Kelola buku lebih mudah, cepat, dan efisien",
-    },
-    {
-      img: banner2,
-      title: "Akses Cepat & Praktis",
-      subtitle: "Semua data koleksi dalam satu genggaman",
-    },
-    {
-      img: banner3,
-      title: "Digital Library",
-      subtitle: "Solusi perpustakaan masa depan",
-    },
+  const categories = [
+    { name: "Art", icon: <FiFeather /> },
+    { name: "Science Fiction", icon: <FiUser /> },
+    { name: "Fantasy", icon: <FiBriefcase /> },
+    { name: "Biographies", icon: <FiBook /> },
+    { name: "Recipe", icon: <FiHeart /> },
+    { name: "Romance", icon: <FiTrendingUp /> },
+    { name: "Textbox", icon: <FiGlobe /> },
+    { name: "Children", icon: <FiTool /> },
+    { name: "Medicine", icon: <FiSmile /> },
+    { name: "Religion", icon: <FiFileText /> },
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <div className="bg-white min-h-screen pb-24">
+    <div className="bg-white min-h-screen">
 
-      {/* HEADER DESKTOP */}
+      {/* NAVBAR ATAS (TETAP) */}
       <div className="hidden md:flex bg-blue-600 text-white px-10 py-3 items-center justify-end text-sm font-medium">
         <div className="flex gap-6">
           {[
@@ -61,8 +52,7 @@ export default function HalamanUtama() {
             <Link
               key={i}
               to={item.path}
-              className="px-3 py-1 rounded-md transition-all duration-200 
-              hover:text-blue-200 hover:bg-white/10"
+              className="px-3 py-1 hover:text-blue-200"
             >
               {item.name}
             </Link>
@@ -74,29 +64,29 @@ export default function HalamanUtama() {
       <div className="bg-white shadow sticky top-0 z-50">
         <div className="max-w-6xl mx-auto flex items-center px-6 py-3">
 
-          <div className="shrink-0 mr-4">
-            <img src={logo} alt="logo" className="w-8 h-8" />
-          </div>
+          <img src={logo} className="w-8 h-8 mr-4" />
 
+          {/* SEARCH */}
           <div className="flex-1 flex justify-center">
             <div className="relative w-full max-w-lg">
               <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
                 placeholder="Cari buku favoritmu..."
-                className="w-full pl-10 pr-4 py-2 border rounded-full focus:outline-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full pl-10 pr-4 py-2 border rounded-full"
               />
             </div>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0 ml-4 relative z-50">
+          {/* ICON */}
+          <div className="flex items-center gap-3 ml-4 relative z-50">
 
-            <FiHeart className="text-xl text-gray-600 cursor-pointer hover:text-red-500 transition" />
+            <FiHeart className="text-xl text-gray-600 cursor-pointer" />
 
             {/* NOTIF */}
             <div className="relative">
               <FiBell
-                className="text-xl text-gray-600 cursor-pointer hover:text-yellow-500 transition"
+                className="text-xl cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsNotifOpen(!isNotifOpen);
@@ -105,17 +95,13 @@ export default function HalamanUtama() {
 
               {isNotifOpen && (
                 <div className="absolute right-0 mt-3 w-72 bg-white rounded-xl shadow-xl border z-50">
-                  <div className="absolute -top-2 right-4 w-4 h-4 bg-white rotate-45 border-l border-t"></div>
-
                   <div className="py-3 text-center">
-                    <h3 className="font-semibold text-gray-700 pb-2 border-b">
+                    <h3 className="font-semibold border-b pb-2">
                       Pemberitahuanmu
                     </h3>
-
-                    <div className="py-6 text-sm text-gray-400 border-b">
-                      Belum ada notifikasi baru
+                    <div className="py-6 text-gray-400">
+                      Belum ada notifikasi
                     </div>
-
                     <button className="pt-2 text-sm text-gray-600 hover:text-blue-600">
                       Lihat Semua
                     </button>
@@ -131,32 +117,19 @@ export default function HalamanUtama() {
                   e.stopPropagation();
                   setIsProfileOpen(!isProfileOpen);
                 }}
-                className="w-9 h-9 bg-blue-600 text-white flex items-center justify-center rounded-full text-sm cursor-pointer"
+                className="w-9 h-9 bg-blue-600 text-white flex items-center justify-center rounded-full cursor-pointer"
               >
                 R
               </div>
 
               {isProfileOpen && (
-                <div className="absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-xl border z-50 overflow-hidden">
-
-                  <div className="flex flex-col items-center py-6 bg-gray-50">
-                    <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-2xl font-bold text-white mb-2">
-                      R
-                    </div>
-                    <h3 className="font-semibold text-gray-700 text-sm">
-                      REVANDA AVRILLITA RIZKY
-                    </h3>
-                    <p className="text-xs text-gray-500">
-                      rizkyavrillita@gmail.com
-                    </p>
-                  </div>
-
-                  <div className="px-4 py-4">
-                    <button className="w-full bg-blue-700 text-white py-2 rounded-lg font-semibold shadow hover:bg-blue-800 transition">
+                <div className="absolute right-0 mt-3 w-64 bg-white shadow rounded-xl p-4">
+                  <p className="font-semibold">REVANDA</p>
+                  <Link to="/profil">
+                    <button className="mt-2 w-full bg-blue-600 text-white py-2 rounded">
                       Profilku
                     </button>
-                  </div>
-
+                  </Link>
                 </div>
               )}
             </div>
@@ -173,78 +146,69 @@ export default function HalamanUtama() {
         />
       )}
 
-      {/* BANNER */}
-      <div className="relative w-full h-screen overflow-hidden">
+      {/* ================= KATEGORI ================= */}
+      <section className="bg-blue-50 py-12 px-6 md:px-20">
+        <h2 className="text-2xl font-bold text-blue-700 text-center mb-8">
+          Kategori Buku
+        </h2>
 
-        <div
-          className="flex h-full transition-transform duration-700"
-          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-        >
-          {slides.map((slide, i) => (
-            <div key={i} className="min-w-full h-full relative">
-              <img
-                src={slide.img}
-                className="w-full h-full object-cover"
-              />
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+          {categories.map((item, i) => (
+            <div
+              key={i}
+              className="bg-white p-5 rounded-xl shadow hover:shadow-md transition text-center cursor-pointer"
+            >
+              <div className="text-3xl text-blue-600 mb-2 flex justify-center">
+                {item.icon}
+              </div>
+              <p>{item.name}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-              <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center px-4">
-                <h1 className="text-3xl md:text-6xl font-bold text-white mb-4">
-                  {slide.title}
-                </h1>
-                <p className="text-white/80 text-sm md:text-lg max-w-xl">
-                  {slide.subtitle}
-                </p>
+      {/* ================= LIST BUKU ================= */}
+      <section className="px-6 md:px-20 py-12">
+        <h2 className="text-2xl font-bold text-blue-700 mb-6">
+          Rekomendasi Bacaan
+        </h2>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="bg-white border rounded-xl shadow hover:shadow-lg transition"
+            >
+              <div className="h-40 bg-blue-100 flex items-center justify-center">
+                Cover {i + 1}
+              </div>
+
+              <div className="p-4">
+                <h3 className="text-sm font-semibold">
+                  Judul Buku {i + 1}
+                </h3>
+                <p className="text-gray-500 text-xs">Penulis</p>
+
+                <button className="mt-3 w-full bg-blue-600 text-white py-2 rounded-lg text-sm">
+                  Baca
+                </button>
               </div>
             </div>
           ))}
         </div>
-
-        {/* DOT */}
-        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2 z-40">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentSlide(i)}
-              className={`h-2 rounded-full transition-all ${
-                i === currentSlide ? "w-8 bg-blue-500" : "w-2 bg-white/50"
-              }`}
-            />
-          ))}
-        </div>
-
-      </div>
-
-      {/* SECTION */}
-      <section className="bg-white py-14 px-6 md:px-20">
-        <h2 className="text-3xl font-bold text-blue-700 text-center mb-10">
-          Buku Terpopuler
-        </h2>
       </section>
+
+      {/* MOBILE NAVBAR (TETAP) */}
+      <div className="md:hidden fixed bottom-0 left-0 w-full bg-blue-600 text-white flex justify-around py-3">
+        <Link to="/halamanutama"><FiHome className="text-2xl" /></Link>
+        <Link to="/koleksi"><FiBook className="text-2xl" /></Link>
+        <Link to="/belanja"><FiShoppingCart className="text-2xl" /></Link>
+        <Link to="/riwayat"><FiClock className="text-2xl" /></Link>
+      </div>
 
       {/* FOOTER */}
       <div className="mt-16 bg-gray-900 text-white text-center py-6">
-        <p className="text-sm">© 2026 BukuIn. All rights reserved.</p>
-      </div>
-
-      {/* ✅ MOBILE NAVBAR (FIXED, FULL WIDTH) */}
-      <div className="md:hidden fixed bottom-0 left-0 w-full bg-blue-600 text-white border-t border-blue-500 flex justify-around items-center py-3 z-50">
-
-        <Link to="/halamanutama">
-          <FiHome className="text-2xl" />
-        </Link>
-
-        <Link to="/koleksi">
-          <FiBook className="text-2xl" />
-        </Link>
-
-        <Link to="/belanja">
-          <FiShoppingCart className="text-2xl" />
-        </Link>
-
-        <Link to="/riwayat">
-          <FiClock className="text-2xl" />
-        </Link>
-
+        © 2026 BukuIn
       </div>
 
     </div>
