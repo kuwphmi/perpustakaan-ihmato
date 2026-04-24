@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-
+import { Link } from "react-router-dom";
 // IMPORT ASSETS
 import banner1 from "../assets/banner1.png";
 import banner2 from "../assets/banner2.png";
@@ -32,6 +32,7 @@ export default function Belanja() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const banners = [banner1, banner2, banner3];
 
@@ -144,6 +145,7 @@ export default function Belanja() {
 
           {/* 🔔 NOTIF */}
           <div className="relative">
+
   {/* ICON */}
   <FiBell
     className="text-xl text-gray-600 cursor-pointer hover:text-yellow-500 transition"
@@ -184,9 +186,47 @@ export default function Belanja() {
 </div>
 
           {/* 👤 PROFILE */}
-          <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-semibold cursor-pointer">
-            R
-          </div>
+          <div className="relative">
+  {/* ICON PROFILE */}
+  <div
+    onClick={(e) => {
+      e.stopPropagation();
+      setIsProfileOpen(!isProfileOpen);
+    }}
+    className="w-9 h-9 bg-blue-600 text-white flex items-center justify-center rounded-full text-sm cursor-pointer"
+  >
+    R
+  </div>
+
+  {/* DROPDOWN PROFILE */}
+  {isProfileOpen && (
+    <div className="absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-xl border z-50 overflow-hidden">
+
+      {/* HEADER */}
+      <div className="flex flex-col items-center py-6 bg-gray-50">
+        <div className="w-16 h-16 bg-blue-700 rounded-full flex items-center justify-center text-2xl font-bold text-gray-700 mb-2">
+          R
+        </div>
+        <h3 className="font-semibold text-gray-700 text-sm">
+          REVANDA AVRILLITA RIZKY
+        </h3>
+        <p className="text-xs text-gray-500">
+          rizkyavrillita@gmail.com
+        </p>
+      </div>
+
+     {/* BUTTON PROFIL */}
+<div className="px-4 py-4">
+  <Link to="/profil">
+  <button className="w-full bg-blue-700 text-white py-2 rounded-lg font-semibold shadow hover:bg-blue-800 transition">
+    Profilku
+  </button>
+</Link>
+</div>
+
+    </div>
+  )}
+</div>
 
           {/* CART */}
           <div className="relative">

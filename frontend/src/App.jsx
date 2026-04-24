@@ -4,7 +4,8 @@ import Login from "./pages/login";
 import HalamanUtama from "./pages/halamanutama";
 import Koleksi from "./pages/koleksi";
 import Belanja from "./pages/belanja";
-import Riwayat from "./pages/riwayat"; // ✅ TAMBAHAN
+import Riwayat from "./pages/riwayat";
+import Profil from "./pages/profil"; // ✅ TAMBAHAN
 import AdminPerpustakaan from "./pages/admin";
 
 function App() {
@@ -16,7 +17,8 @@ function App() {
         <Route path="/halamanutama" element={<HalamanUtama />} />
         <Route path="/koleksi" element={<Koleksi />} />
         <Route path="/belanja" element={<Belanja />} />
-        <Route path="/riwayat" element={<Riwayat />} /> {/* ✅ INI PENTING */}
+        <Route path="/riwayat" element={<Riwayat />} />
+        <Route path="/profil" element={<Profil />} /> 
         <Route path="/admin" element={<AdminPerpustakaan />} />
       </Routes>
     </BrowserRouter>

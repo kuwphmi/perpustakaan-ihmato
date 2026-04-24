@@ -14,6 +14,7 @@ import logo from "../assets/logo.png";
 
 export default function Riwayat() {
   const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const historyBooks = [
     { id: 1, title: "Algoritma Dasar", date: "20 April 2026" },
@@ -25,25 +26,26 @@ export default function Riwayat() {
   return (
     <div className="min-h-screen bg-gray-100">
 
+      {/* HEADER BIRU */}
       <div className="hidden md:flex bg-blue-600 text-white px-10 py-3 items-center justify-end text-sm font-medium">
-  <div className="flex gap-6">
-    {[
-      { name: "Beranda", path: "/halamanutama" },
-      { name: "Koleksi", path: "/koleksi" },
-      { name: "Belanja", path: "/belanja" },
-      { name: "Riwayat", path: "/riwayat" },
-    ].map((item, i) => (
-      <Link
-        key={i}
-        to={item.path}
-        className="px-3 py-1 rounded-md transition-all duration-200 
-        hover:text-blue-200 hover:bg-white/10"
-      >
-        {item.name}
-      </Link>
-    ))}
-  </div>
-</div>
+        <div className="flex gap-6">
+          {[
+            { name: "Beranda", path: "/halamanutama" },
+            { name: "Koleksi", path: "/koleksi" },
+            { name: "Belanja", path: "/belanja" },
+            { name: "Riwayat", path: "/riwayat" },
+          ].map((item, i) => (
+            <Link
+              key={i}
+              to={item.path}
+              className="px-3 py-1 rounded-md transition-all duration-200 
+              hover:text-blue-200 hover:bg-white/10"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
+      </div>
 
       {/* NAVBAR */}
       <div className="bg-white shadow sticky top-0 z-50">
@@ -69,13 +71,14 @@ export default function Riwayat() {
 
             <FiHeart className="text-xl text-gray-600 hover:text-red-500 cursor-pointer" />
 
-            {/* NOTIF */}
+            {/* 🔔 NOTIF */}
             <div className="relative">
               <FiBell
                 className="text-xl text-gray-600 hover:text-yellow-500 cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsNotifOpen(!isNotifOpen);
+                  setIsProfileOpen(false);
                 }}
               />
 
@@ -101,9 +104,44 @@ export default function Riwayat() {
               )}
             </div>
 
-            {/* PROFILE */}
-            <div className="w-9 h-9 bg-blue-600 text-white flex items-center justify-center rounded-full text-sm">
-              R
+            {/* 👤 PROFILE */}
+            <div className="relative">
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsProfileOpen(!isProfileOpen);
+                  setIsNotifOpen(false);
+                }}
+                className="w-9 h-9 bg-blue-600 text-white flex items-center justify-center rounded-full text-sm cursor-pointer"
+              >
+                R
+              </div>
+
+              {isProfileOpen && (
+                <div className="absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-xl border z-50 overflow-hidden">
+
+                  {/* HEADER */}
+                  <div className="flex flex-col items-center py-6 bg-gray-50">
+                    <div className="w-16 h-16 bg-blue-700 rounded-full flex items-center justify-center text-2xl font-bold text-gray-700 mb-2">
+                      R
+                    </div>
+                    <h3 className="font-semibold text-gray-700 text-sm">
+                      REVANDA AVRILLITA RIZKY
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      rizkyavrillita@gmail.com
+                    </p>
+                  </div>
+
+                  {/* BUTTON */}
+                  <div className="px-4 py-4">
+                    <button className="w-full bg-blue-700 text-white py-2 rounded-lg font-semibold shadow hover:bg-blue-800 transition">
+                      Profilku
+                    </button>
+                  </div>
+
+                </div>
+              )}
             </div>
 
           </div>
@@ -112,22 +150,23 @@ export default function Riwayat() {
       </div>
 
       {/* OVERLAY */}
-      {isNotifOpen && (
+      {(isNotifOpen || isProfileOpen) && (
         <div
           className="fixed inset-0 z-30"
-          onClick={() => setIsNotifOpen(false)}
+          onClick={() => {
+            setIsNotifOpen(false);
+            setIsProfileOpen(false);
+          }}
         />
       )}
 
       {/* CONTENT */}
       <div className="max-w-6xl mx-auto px-6 py-10">
 
-        {/* TITLE */}
         <h1 className="text-3xl font-bold text-blue-700 mb-6">
           Riwayat Membaca
         </h1>
 
-        {/* LIST RIWAYAT */}
         <div className="bg-white rounded-xl shadow p-6 space-y-4">
 
           {historyBooks.map((book) => (
