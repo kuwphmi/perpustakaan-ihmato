@@ -158,25 +158,23 @@ function addNotif($message)
 }
 public function checkout()
 {
-    // 🔥 CONFIG MIDTRANS
-    Config::$serverKey = config('midtrans.serverKey');
-    Config::$isProduction = config('midtrans.isProduction');
-    Config::$isSanitized = true;
-    Config::$is3ds = true;
+    \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+    \Midtrans\Config::$isProduction = false;
+    \Midtrans\Config::$isSanitized = true;
+    \Midtrans\Config::$is3ds = true;
 
-    // 🔥 DATA TRANSAKSI
     $params = [
         'transaction_details' => [
             'order_id' => 'ORDER-' . time(),
-            'gross_amount' => 10000, // harga (contoh)
+            'gross_amount' => 10000,
         ],
         'customer_details' => [
             'first_name' => 'User',
             'email' => 'user@gmail.com',
         ],
     ];
-    
-    $snapToken = Snap::getSnapToken($params);
+
+    $snapToken = \Midtrans\Snap::getSnapToken($params);
 
     return view('checkout', compact('snapToken'));
 }
