@@ -19,6 +19,9 @@ import logo from "../assets/logo.png";
 export default function HalamanUtama() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // ✅ STATE NOTIF
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+
   const slides = [
     {
       img: banner1,
@@ -48,28 +51,27 @@ export default function HalamanUtama() {
     <div className="bg-white min-h-screen">
 
       <div className="hidden md:flex bg-blue-600 text-white px-10 py-3 items-center justify-end text-sm font-medium">
-  <div className="flex gap-6">
-    {[
-      { name: "Beranda", path: "/halamanutama" },
-      { name: "Koleksi", path: "/koleksi" },
-      { name: "Belanja", path: "/belanja" },
-      { name: "Riwayat", path: "/riwayat" },
-    ].map((item, i) => (
-      <Link
-        key={i}
-        to={item.path}
-        className="px-3 py-1 rounded-md transition-all duration-200 
-        hover:text-blue-200 hover:bg-white/10"
-      >
-        {item.name}
-      </Link>
-    ))}
-  </div>
-</div>
+        <div className="flex gap-6">
+          {[
+            { name: "Beranda", path: "/halamanutama" },
+            { name: "Koleksi", path: "/koleksi" },
+            { name: "Belanja", path: "/belanja" },
+            { name: "Riwayat", path: "/riwayat" },
+          ].map((item, i) => (
+            <Link
+              key={i}
+              to={item.path}
+              className="px-3 py-1 rounded-md transition-all duration-200 
+              hover:text-blue-200 hover:bg-white/10"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
+      </div>
 
       {/* NAVBAR */}
       <div className="bg-white shadow sticky top-0 z-50">
-
         <div className="max-w-6xl mx-auto flex items-center px-6 py-3">
 
           {/* LOGO */}
@@ -90,17 +92,62 @@ export default function HalamanUtama() {
           </div>
 
           {/* ICON */}
-          <div className="flex items-center gap-3 shrink-0 ml-4">
+          <div className="flex items-center gap-3 shrink-0 ml-4 relative z-50">
+
             <FiHeart className="text-xl text-gray-600 cursor-pointer hover:text-red-500 transition" />
-            <FiBell className="text-xl text-gray-600 cursor-pointer hover:text-yellow-500 transition" />
+
+            {/* 🔔 NOTIFIKASI */}
+            <div className="relative">
+              <FiBell
+                className="text-xl text-gray-600 cursor-pointer hover:text-yellow-500 transition"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsNotifOpen(!isNotifOpen);
+                }}
+              />
+
+              {/* DROPDOWN */}
+              {isNotifOpen && (
+                <div className="absolute right-0 mt-3 w-72 bg-white rounded-xl shadow-xl border z-50">
+
+                  {/* ARROW */}
+                  <div className="absolute -top-2 right-4 w-4 h-4 bg-white rotate-45 border-l border-t"></div>
+
+                  <div className="py-3 text-center">
+
+                    <h3 className="font-semibold text-gray-700 pb-2 border-b">
+                      Pemberitahuanmu
+                    </h3>
+
+                    <div className="py-6 text-sm text-gray-400 border-b">
+                      Belum ada notifikasi baru
+                    </div>
+
+                    <button className="pt-2 text-sm text-gray-600 hover:text-blue-600">
+                      Lihat Semua
+                    </button>
+
+                  </div>
+                </div>
+              )}
+            </div>
 
             <div className="w-9 h-9 bg-blue-600 text-white flex items-center justify-center rounded-full text-sm">
               R
             </div>
+
           </div>
 
         </div>
       </div>
+
+      {/* ✅ OVERLAY FIX (tidak ganggu klik) */}
+      {isNotifOpen && (
+        <div
+          className="fixed inset-0 z-30"
+          onClick={() => setIsNotifOpen(false)}
+        />
+      )}
 
       {/* BANNER FULLSCREEN */}
       <div className="relative w-full h-screen overflow-hidden">
@@ -128,38 +175,26 @@ export default function HalamanUtama() {
           ))}
         </div>
 
-        {/* MOBILE NAVBAR (ICON ONLY) */}
-<div className="md:hidden fixed bottom-0 left-0 w-full bg-blue-600 text-white border-t border-blue-500 flex justify-around items-center py-3 z-50">
+        {/* MOBILE NAVBAR (TETAP) */}
+        <div className="md:hidden fixed bottom-0 left-0 w-full bg-blue-600 text-white border-t border-blue-500 flex justify-around items-center py-3 z-50">
 
-  <Link
-    to="/halamanutama"
-    className="flex items-center justify-center transition-all duration-200 active:scale-90 hover:text-white/80"
-  >
-    <FiHome className="text-2xl" />
-  </Link>
+          <Link to="/halamanutama">
+            <FiHome className="text-2xl" />
+          </Link>
 
-  <Link
-    to="/koleksi"
-    className="flex items-center justify-center transition-all duration-200 active:scale-90 hover:text-white/80"
-  >
-    <FiBook className="text-2xl" />
-  </Link>
+          <Link to="/koleksi">
+            <FiBook className="text-2xl" />
+          </Link>
 
-  <Link
-    to="/belanja"
-    className="flex items-center justify-center transition-all duration-200 active:scale-90 hover:text-white/80"
-  >
-    <FiShoppingCart className="text-2xl" />
-  </Link>
+          <Link to="/belanja">
+            <FiShoppingCart className="text-2xl" />
+          </Link>
 
-  <Link
-    to="/riwayat"
-    className="flex items-center justify-center transition-all duration-200 active:scale-90 hover:text-white/80"
-  >
-    <FiClock className="text-2xl" />
-  </Link>
+          <Link to="/riwayat">
+            <FiClock className="text-2xl" />
+          </Link>
 
-</div>
+        </div>
 
         {/* DOT */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
