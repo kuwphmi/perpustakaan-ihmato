@@ -5,36 +5,37 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class AdminLibraryController extends Controller
 {
     public function dashboard()
     {
         return response()->json([
-            'total_loans' => DB::table('loans')->count(),
+            'total_loans' => DB::table('loan_requests')->where('status', 'approved')->count(),
             'total_members' => DB::table('members')->count(),
-            'total_returns' => DB::table('returns')->count(),
-            'total_requests' => DB::table('loan_requests')->count() + DB::table('extension_requests')->count(),
+            'total_returns' => DB::table('loan_requests')->whereNotNull('returned_at')->count(),
+            'total_requests' => DB::table('loan_requests')->count(),
         ]);
     }
 
     public function loans()
     {
-        $data = DB::table('loans')
-            ->leftJoin('members', 'loans.member_id', '=', 'members.id')
-            ->leftJoin('books', 'loans.book_id', '=', 'books.id')
+        return DB::table('loan_requests')
+            ->leftJoin('members', 'loan_requests.member_id', '=', 'members.id')
+            ->leftJoin('books', 'loan_requests.book_id', '=', 'books.id')
             ->select(
-                'loans.id',
+                'loan_requests.id',
                 'members.name as member_name',
                 'books.title as book_title',
-                'loans.loan_date',
-                'loans.due_date',
-                'loans.status'
+                'loan_requests.request_date',
+                'loan_requests.due_date',
+                'loan_requests.status'
             )
-            ->orderByDesc('loans.id')
+            ->where('loan_requests.status', 'approved')
+            ->orderByDesc('loan_requests.id')
             ->get();
-
-        return response()->json($data);
     }
 
     public function members()
@@ -49,24 +50,6 @@ class AdminLibraryController extends Controller
 
     public function returns()
     {
-        $data = DB::table('returns')
-            ->leftJoin('members', 'returns.member_id', '=', 'members.id')
-            ->leftJoin('books', 'returns.book_id', '=', 'books.id')
-            ->select(
-                'returns.id',
-                'members.name as member_name',
-                'books.title as book_title',
-                'returns.return_date',
-                'returns.fine'
-            )
-            ->orderByDesc('returns.id')
-            ->get();
-
-        return response()->json($data);
-    }
-
-    public function loanRequests()
-    {
         $data = DB::table('loan_requests')
             ->leftJoin('members', 'loan_requests.member_id', '=', 'members.id')
             ->leftJoin('books', 'loan_requests.book_id', '=', 'books.id')
@@ -74,143 +57,232 @@ class AdminLibraryController extends Controller
                 'loan_requests.id',
                 'members.name as member_name',
                 'books.title as book_title',
-                'loan_requests.request_date',
+                'loan_requests.returned_at',
+                'loan_requests.due_date',
                 'loan_requests.status'
             )
+            ->whereNotNull('loan_requests.returned_at')
             ->orderByDesc('loan_requests.id')
-            ->get()
-            ->map(function ($row) {
-                $row->_type = 'loan_request';
-                return $row;
-            });
+            ->get();
 
         return response()->json($data);
+    }
+
+        public function loanRequests()
+        {
+            $data = DB::table('loan_requests')
+                ->leftJoin('members', 'loan_requests.member_id', '=', 'members.id')
+                ->leftJoin('books', 'loan_requests.book_id', '=', 'books.id')
+                ->select(
+                    'loan_requests.id',
+                    'members.name as member_name',
+                    'books.title as book_title',
+                    'loan_requests.request_date',
+                    'loan_requests.status'
+                )
+                ->orderByDesc('loan_requests.id')
+                ->get()
+                ->map(function ($row) {
+                    $row->_type = 'loan_request';
+                    return $row;
+                });
+
+            return response()->json($data);
+        }
+
+        public function storeLoanRequest(Request $request)
+        {
+            $validated = $request->validate([
+                'member_id' => 'required|integer',
+                'book_id' => 'required|integer',
+            ]);
+
+            $existsBook = DB::table('books')->where('id', $validated['book_id'])->exists();
+            $existsMember = DB::table('members')->where('id', $validated['member_id'])->exists();
+
+            if (!$existsBook || !$existsMember) {
+                return response()->json(['message' => 'Data tidak valid'], 400);
+            }
+
+            DB::table('loan_requests')->insert([
+                'member_id' => $validated['member_id'],
+                'book_id' => $validated['book_id'],
+                'request_date' => now(),
+                'status' => 'pending',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            return response()->json(['message' => 'Request berhasil']);
+        }
+    public function approveLoanRequest($id)
+    {
+        $check = DB::table('loan_requests')
+        ->where('id', $id)
+        ->where('status', 'pending')
+        ->exists();
+
+    if (!$check) {
+        return response()->json(['message' => 'Invalid status'], 400);
+    }
+
+    DB::table('loan_requests')
+        ->where('id', $id)
+        ->update([
+            'status' => 'approved',
+            'due_date' => now()->addDays(7),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json(['message' => 'Disetujui']);
     }
 
     public function extensionRequests()
     {
         $data = DB::table('extension_requests')
-            ->leftJoin('loans', 'extension_requests.loan_id', '=', 'loans.id')
-            ->leftJoin('members', 'loans.member_id', '=', 'members.id')
-            ->leftJoin('books', 'loans.book_id', '=', 'books.id')
+            ->leftJoin('loan_requests', 'extension_requests.loan_id', '=', 'loan_requests.id')
+            ->leftJoin('members', 'loan_requests.member_id', '=', 'members.id')
+            ->leftJoin('books', 'loan_requests.book_id', '=', 'books.id')
             ->select(
                 'extension_requests.id',
                 'members.name as member_name',
                 'books.title as book_title',
                 'extension_requests.old_due_date',
                 'extension_requests.new_due_date',
-                'extension_requests.status'
+                'extension_requests.reason',
+                'extension_requests.status',
+                'extension_requests.loan_id'
             )
             ->orderByDesc('extension_requests.id')
-            ->get()
-            ->map(function ($row) {
-                $row->_type = 'extension_request';
-                return $row;
-            });
+            ->get();
 
         return response()->json($data);
     }
 
-    public function storeLoanRequest(Request $request)
-    {
-        $validated = $request->validate([
-            'member_id' => 'required|integer',
-            'book_id' => 'required|integer',
-            'loan_date' => 'required|date',
-            'due_date' => 'required|date',
-            'notes' => 'nullable|string',
-        ]);
-
-        DB::table('loan_requests')->insert([
-            'member_id' => $validated['member_id'],
-            'book_id' => $validated['book_id'],
-            'request_date' => Carbon::now(),
-            'status' => 'pending',
-            'notes' => $validated['notes'] ?? null,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        return response()->json(['message' => 'Pengajuan peminjaman berhasil disimpan.'], 201);
-    }
-
-    public function approveLoanRequest($id)
-    {
-        $requestData = DB::table('loan_requests')->where('id', $id)->first();
-
-        if (!$requestData) {
-            return response()->json(['message' => 'Data tidak ditemukan.'], 404);
-        }
-
-        DB::table('loan_requests')
-            ->where('id', $id)
-            ->update([
-                'status' => 'approved',
-                'updated_at' => now(),
-            ]);
-
-        DB::table('loans')->insert([
-            'member_id' => $requestData->member_id,
-            'book_id' => $requestData->book_id,
-            'loan_date' => Carbon::now()->toDateString(),
-            'due_date' => Carbon::now()->addDays(7)->toDateString(),
-            'status' => 'active',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        return response()->json(['message' => 'Pengajuan disetujui.']);
-    }
-
     public function storeExtensionRequest(Request $request)
-    {
-        $validated = $request->validate([
-            'loan_id' => 'required|integer',
-            'new_due_date' => 'required|date',
-            'reason' => 'nullable|string',
-        ]);
+{
+    $validated = $request->validate([
+        'loan_id' => 'required|integer',
+        'new_due_date' => 'required|date',
+        'reason' => 'nullable|string'
+    ]);
 
-        $loan = DB::table('loans')->where('id', $validated['loan_id'])->first();
+    $loan = DB::table('loan_requests')
+        ->where('id', $validated['loan_id'])
+        ->first();
 
-        if (!$loan) {
-            return response()->json(['message' => 'Loan tidak ditemukan.'], 404);
-        }
+    if (!$loan) {
+        return response()->json(['message' => 'Loan tidak ditemukan'], 404);
+    }
 
-        DB::table('extension_requests')->insert([
-            'loan_id' => $validated['loan_id'],
-            'old_due_date' => $loan->due_date,
-            'new_due_date' => $validated['new_due_date'],
-            'reason' => $validated['reason'] ?? null,
-            'status' => 'pending',
-            'created_at' => now(),
+    if ($loan->status !== 'approved') {
+    return response()->json(['message' => 'Pinjaman belum aktif'], 400);
+}
+
+DB::table('extension_requests')->insert([
+    'loan_id' => $validated['loan_id'],
+    'old_due_date' => $loan->due_date,
+    'new_due_date' => $validated['new_due_date'],
+    'reason' => $validated['reason'],
+    'status' => 'pending',
+    'created_at' => now(),
+    'updated_at' => now(),
+]);
+
+    return response()->json(['message' => 'Request terkirim']);
+}
+
+ public function approveExtension($id)
+{
+    $ext = DB::table('extension_requests')
+        ->where('id', $id)
+        ->first();
+
+    if (!$ext) {
+        return response()->json(['message' => 'Not found'], 404);
+    }
+
+    if ($ext->status !== 'pending') {
+        return response()->json(['message' => 'Sudah diproses'], 400);
+    }
+
+    $loan = DB::table('loan_requests')
+        ->where('id', $ext->loan_id)
+        ->first();
+
+    if (!$loan) {
+        return response()->json(['message' => 'Loan tidak ditemukan'], 404);
+    }
+
+    if (($loan->extend_count ?? 0) >= 5) {
+    return response()->json([
+        'message' => 'Sudah mencapai maksimal 5 kali perpanjangan'
+    ], 400);
+}
+
+DB::table('loan_requests')
+    ->where('id', $ext->loan_id)
+    ->update([
+        'due_date' => $ext->new_due_date,
+        'extend_count' => ($loan->extend_count ?? 0) + 1,
+        'updated_at' => now(),
+    ]);
+
+    DB::table('extension_requests')
+        ->where('id', $id)
+        ->update([
+            'status' => 'approved',
             'updated_at' => now(),
         ]);
 
-        return response()->json(['message' => 'Pengajuan perpanjangan berhasil disimpan.'], 201);
+    return response()->json([
+        'message' => 'Perpanjangan disetujui'
+    ]);
+}
+
+    public function monthlyReportPdf(Request $request)
+    {
+        $month = $request->input('month', now()->month);
+        $year = $request->input('year', now()->year);
+
+        $loans = DB::table('loan_requests')
+            ->leftJoin('members', 'loan_requests.member_id', '=', 'members.id')
+            ->leftJoin('books', 'loan_requests.book_id', '=', 'books.id')
+            ->select(
+                'members.name as member_name',
+                'books.title as book_title',
+                'loan_requests.request_date',
+                'loan_requests.returned_at',
+                'loan_requests.status'
+            )
+            ->whereMonth('loan_requests.request_date', $month)
+            ->whereYear('loan_requests.request_date', $year)
+            ->get();
+
+        $pdf = Pdf::loadView('report.monthly', [
+            'loans' => $loans,
+            'month' => $month,
+            'year' => $year
+        ]);
+
+        return $pdf->stream("laporan-$month-$year.pdf");
     }
 
-    public function approveExtensionRequest($id)
+   public function printLoans()
     {
-        $ext = DB::table('extension_requests')->where('id', $id)->first();
+        $loans = DB::table('loan_requests')
+            ->leftJoin('members', 'loan_requests.member_id', '=', 'members.id')
+            ->leftJoin('books', 'loan_requests.book_id', '=', 'books.id')
+            ->select(
+                'members.name as member_name',
+                'books.title as book_title',
+                'loan_requests.request_date',
+                'loan_requests.status'
+            )
+            ->get();
 
-        if (!$ext) {
-            return response()->json(['message' => 'Data tidak ditemukan.'], 404);
-        }
+        $pdf = Pdf::loadView('pdf.loans', compact('loans'));
 
-        DB::table('extension_requests')
-            ->where('id', $id)
-            ->update([
-                'status' => 'approved',
-                'updated_at' => now(),
-            ]);
-
-        DB::table('loans')
-            ->where('id', $ext->loan_id)
-            ->update([
-                'due_date' => $ext->new_due_date,
-                'updated_at' => now(),
-            ]);
-
-        return response()->json(['message' => 'Perpanjangan disetujui.']);
+        return $pdf->download('data-pinjaman.pdf');
     }
 }

@@ -190,7 +190,10 @@ export default function AdminPerpustakaan() {
   };
 
   const handlePrint = () => {
-    window.print();
+    const month = new Date().getMonth() + 1;
+    const year = new Date().getFullYear();
+
+    window.location.href = `${API_BASE}/admin/report/monthly/pdf?month=${month}&year=${year}`;
   };
 
   const StatCard = ({ title, value, subtitle }) => (
@@ -237,11 +240,14 @@ export default function AdminPerpustakaan() {
                           Setujui
                         </button>
                       )}
-                      {row._type === "extension_request" && (
-                        <button onClick={() => approveExtension(row.id)} className="rounded-xl bg-blue-600 px-3 py-2 text-white hover:bg-blue-700">
-                          Setujui
-                        </button>
-                      )}
+                      {row._type === "extension_request" && row.status === "pending" && (
+                      <button
+                        onClick={() => approveExtension(row.id)}
+                        className="rounded-xl bg-blue-600 px-3 py-2 text-white hover:bg-blue-700"
+                      >
+                        Setujui
+                      </button>
+                    )}
                     </td>
                   )}
                 </tr>
