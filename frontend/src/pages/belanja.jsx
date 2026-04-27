@@ -228,56 +228,24 @@ export default function Belanja() {
   )}
 </div>
 
-          {/* CART */}
-          <div className="relative">
-            
-  {/* ICON */}
-  <div
-    className={`text-xl cursor-pointer transition ${
+ {/* CART */}
+<div className="relative">
+  <Link
+    to="/keranjang"
+    className={`text-xl cursor-pointer transition relative ${
       scrolled
         ? "text-gray-700 hover:text-blue-600"
         : "text-white hover:text-blue-200"
     }`}
-    onClick={(e) => {
-      e.stopPropagation();
-      setIsCartOpen(!isCartOpen);
-    }}
   >
-    🛒 {cart.length > 0 && <span>{cart.length}</span>}
-  </div>
+    🛒
 
-  {/* DROPDOWN */}
-  {isCartOpen && (
-    <div className="absolute right-0 mt-3 w-72 bg-white rounded-xl shadow-xl border z-50">
-
-      {/* arrow kecil */}
-      <div className="absolute -top-2 right-4 w-4 h-4 bg-white rotate-45 border-l border-t"></div>
-
-      <div className="p-4">
-        {cart.length === 0 ? (
-          <div className="text-center py-6">
-            <div className="text-4xl mb-2">🛍️</div>
-            <p className="text-gray-500 text-sm">Belum ada produk</p>
-          </div>
-        ) : (
-          <>
-            <h3 className="font-semibold mb-3">Keranjang</h3>
-
-            {cart.map((item, i) => (
-              <div key={i} className="flex justify-between text-sm mb-2">
-                <span>{item.name}</span>
-                <span>Rp {item.price}</span>
-              </div>
-            ))}
-
-            <button className="mt-3 w-full bg-blue-600 text-white py-2 rounded-lg text-sm">
-              Checkout
-            </button>
-          </>
-        )}
-      </div>
-    </div>
-  )}
+    {cart.length > 0 && (
+      <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+        {cart.length}
+      </span>
+    )}
+  </Link>
 </div>
 
           {/* HAMBURGER */}

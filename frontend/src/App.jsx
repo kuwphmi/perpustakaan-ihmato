@@ -1,14 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react"; // ✅ TAMBAHIN
+
 import Beranda from "./pages/beranda";
 import Login from "./pages/login";
 import HalamanUtama from "./pages/halamanutama";
 import Koleksi from "./pages/koleksi";
 import Belanja from "./pages/belanja";
+import Keranjang from "./pages/keranjang";
 import Riwayat from "./pages/riwayat";
-import Profil from "./pages/profil"; // ✅ TAMBAHAN
+import Profil from "./pages/profil";
 import AdminPerpustakaan from "./pages/admin";
 
 function App() {
+  const [cart, setCart] = useState([]); // ✅ STATE GLOBAL
+
   return (
     <BrowserRouter>
       <Routes>
@@ -16,9 +21,15 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/halamanutama" element={<HalamanUtama />} />
         <Route path="/koleksi" element={<Koleksi />} />
-        <Route path="/belanja" element={<Belanja />} />
+
+        {/* ✅ kirim cart ke belanja */}
+        <Route path="/belanja" element={<Belanja cart={cart} setCart={setCart} />} />
+
+        {/* ✅ kirim cart ke keranjang */}
+        <Route path="/keranjang" element={<Keranjang cart={cart} />} />
+
         <Route path="/riwayat" element={<Riwayat />} />
-        <Route path="/profil" element={<Profil />} /> 
+        <Route path="/profil" element={<Profil />} />
         <Route path="/admin" element={<AdminPerpustakaan />} />
       </Routes>
     </BrowserRouter>
